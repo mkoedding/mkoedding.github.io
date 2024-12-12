@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvin Ködding | JLU Gießen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Meine Forschungswebsite</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#papers">Paper</a></li>
+                <li><a href="#projects">Projekte</a></li>
+                <li><a href="#about">Über mich</a></li>
+                <li><a href="https://www.uni-giessen.de/de/fbz/zentren/zfbk/digikomp?tabid=nav-link-7f703be5f0644320ade8a2cc9201f648">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h2>Willkommen!</h2>
+            <p>... über digitale Lehre, Mathematik, Gott und die Welt</p>
+        </section>
+
+        <section id="papers">
+            <h2>Paper</h2>
+            <div>
+                <label for="filter">Filtern nach Jahr:</label>
+                <select id="filter">
+                    <option value="all">Alle</option>
+                    <option value="2024">2024</option>
+                </select>
+            </div>
+            <div id="paper-list">
+                <div class="paper" data-year="2024">
+                    <h3>NCMA 2024</h3>
+                    <p><strong>Jahr:</strong> 2024</p>
+                    <p><strong>Beschreibung:</strong> In this paper, we continue the research on the power of contextual grammars with selection languages
+                        from subfamilies of the family of regular languages. We investigate various comet-like types of
+                        languages and compare such language families to some other subregular families of languages (finite,
+                        monoidal, nilpotent, combinational, (symmetric) definite, ordered, non-counting, power-separating,
+                        suffix-closed, commutative, circular, or union-free languages). Further, we compare the language
+                        families defined by these types for the selection with each other and with the families of the hierarchy
+                        obtained for external contextual grammars. In this way, we extend the existing hierarchy by new
+                        language families.</p>
+                    Link zum <a href="https://arxiv.org/pdf/2409.06974">ArXiv</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projekte</h2>
+            <div>
+                <label for="filter2">Filtern nach Jahr:</label>
+                <select id="filter2">
+                    <option value="all">Alle</option>
+                    <option value="2024">2024</option>
+                </select>
+            </div>
+            <div id="project-list">
+                <div class="project" data-year="2024">
+                    <h3>DigiKomp+</h3>
+                    <p><strong>Jahr:</strong> 2024</p>
+                    <p><strong>Beschreibung:</strong> DigiKomp+ ist dein Wegweiser durch die digitale Welt.
+                        Egal, ob du noch am Anfang deiner digitalen Reise stehst oder bereits Erfahrungen hast, 
+                        DigiKomp+ hilft dir dabei, deine Skills auf das nächste Level zu bringen. Das Tempo? 
+                        Das bestimmst du! Passe die Angebote von DigiKomp+ an deinen Rhythmus an und wähle Module, 
+                        die genau deinem Bedarf entsprechen. <i>Zusammenfassung und Erfahrungsberichte des Projektteams</i></p>
+                    <a href="#">Download</a> zum Projektbericht
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>Über mich</h2>
+            <table>
+                <tr>
+                    <th>Interessen</th>
+                    <td>Digitale Lehre, Didaktik der Mathematik, Theoretische Informatik</td>
+                </tr>
+                <tr>
+                    <th>Bildung</th>
+                    <td>
+                        <ul>
+                            <li>2020-2024: Erstes Staatsexamen, Lehramt an Gymnasien, JLU Gießen</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Berufserfahrung</th>
+                    <td>
+                        <ul>
+                            <li>seit 2024: Lehrkraft für Fachinformatiker mdS Systemintegration (LF02, LF03, LF09 - LF12)</li>
+                            <li>seit 2024: Projektmitarbeiter <a href="https://uni-giessen.de/zfbk/digikomp">DigiKomp+</a></li>
+                            <li>2020-2022: Systemadministrator, Bangert engineering & datentechnik</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Publikationen</th>
+                    <td>Liste der wichtigsten Veröffentlichungen (siehe Paper-Bereich).</td>
+                </tr>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Meine Forschungswebsite</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
