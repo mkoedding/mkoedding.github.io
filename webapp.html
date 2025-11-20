@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potenzreihen Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <div class="container mx-auto p-4 max-w-6xl">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-indigo-600">🎓 Potenzreihen Konvergenz-Labor</h1>
+            <p class="text-gray-600 mt-2">Untersuche das Verhalten von $\sum a_n (x-x_0)^n$</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 lg:col-span-1">
+                <h2 class="text-xl font-semibold mb-4 border-b pb-2">Einstellungen</h2>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Allgemeines Glied $a_n$ (nutze 'n')</label>
+                    <input type="text" id="termInput" value="(-1)^n / n" 
+                           class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50 font-mono text-sm"
+                           placeholder="z.B. 1/n^2 oder (-1)^n / n!">
+                    <p class="text-xs text-gray-500 mt-1">Beispiele: <code class="bg-gray-100 p-1">1/n</code>, <code class="bg-gray-100 p-1">1/n!</code>, <code class="bg-gray-100 p-1">1/2^n</code></p>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Entwicklungspunkt $x_0$</label>
+                    <input type="number" id="centerInput" value="0" step="0.5"
+                           class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Anzahl der Summanden ($N$): <span id="nDisplay" class="font-bold text-indigo-600">5</span></label>
+                    <input type="range" id="sliderN" min="0" max="50" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                </div>
+
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="font-bold text-indigo-900 mb-2">Analyse (Numerisch)</h3>
+                    <p class="text-sm mb-1">Geschätzter Radius $R \approx$ <span id="radiusOutput" class="font-mono font-bold">...</span></p>
+                    <p class="text-xs text-gray-600">Berechnet über Quotientenkriterium bei n=1000.</p>
+                </div>
+                
+                <button onclick="updateApp()" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition">
+                    Neu berechnen
+                </button>
+            </div>
+
+            <div class="bg-white p-2 rounded-xl shadow-md border border-gray-100 lg:col-span-2 flex flex-col">
+                <div id="plotDiv" class="w-full h-[500px]"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialisierung
+        const slider = document.getElementById('sliderN');
+        const nDisplay = document.getElementById('nDisplay');
+        
+        slider.addEventListener('input', (e) => {
+            nDisplay.innerText = e.target.value;
+            updatePlotOnly(); // Nur Plot updaten, nicht Radius neu berechnen für Performance
+        });
+
+        document.getElementById('termInput').addEventListener('change', updateApp);
+        document.getElementById('centerInput').addEventListener('change', updateApp);
+
+        let cachedRadius = 0;
+
+        // Hauptfunktion
+        function updateApp() {
+            calculateRadius();
+            updatePlotOnly();
+        }
+
+        function calculateRadius() {
+            const exprStr = document.getElementById('termInput').value;
+            
+            try {
+                // Numerische Schätzung des Radius über Quotientenkriterium |a_n / a_{n+1}| für großes n
+                const n_large = 1000;
+                const scope1 = { n: n_large };
+                const scope2 = { n: n_large + 1 };
+                
+                const a_n = math.evaluate(exprStr, scope1);
+                const a_n_plus_1 = math.evaluate(exprStr, scope2);
+
+                if (Math.abs(a_n_plus_1) < 1e-10) {
+                    cachedRadius = Infinity; // Wenn a_{n+1} fast 0 ist, ist R unendlich
+                } else {
+                    const ratio = Math.abs(a_n / a_n_plus_1);
+                    cachedRadius = ratio;
+                }
+
+                // Ausgabe formatieren
+                const outputEl = document.getElementById('radiusOutput');
+                if (cachedRadius > 10000) outputEl.innerText = "∞ (Unendlich)";
+                else if (isNaN(cachedRadius)) outputEl.innerText = "Fehler";
+                else outputEl.innerText = cachedRadius.toFixed(4);
+
+            } catch (err) {
+                document.getElementById('radiusOutput').innerText = "Syntax Fehler";
+                console.error(err);
+            }
+        }
+
+        function updatePlotOnly() {
+            const exprStr = document.getElementById('termInput').value;
+            const x0 = parseFloat(document.getElementById('centerInput').value);
+            const N = parseInt(slider.value);
+            
+            // Bestimme Plot-Bereich basierend auf Radius
+            let rangeLimit = 2;
+            if (cachedRadius !== Infinity && !isNaN(cachedRadius) && cachedRadius > 0) {
+                rangeLimit = cachedRadius * 1.5;
+            } else if (cachedRadius === Infinity) {
+                rangeLimit = 10; 
+            }
+            // Begrenzung falls Radius extrem klein oder groß
+            if (rangeLimit > 20) rangeLimit = 20;
+            if (rangeLimit < 1) rangeLimit = 1;
+
+            const xValues = [];
+            const yValues = [];
+            const steps = 400;
+            const startX = x0 - rangeLimit;
+            const endX = x0 + rangeLimit;
+            const stepSize = (endX - startX) / steps;
+
+            try {
+                const compiledExpr = math.compile(exprStr);
+
+                for (let i = 0; i <= steps; i++) {
+                    const x = startX + i * stepSize;
+                    let sum = 0;
+                    
+                    // Partialsumme berechnen
+                    for (let n = 0; n <= N; n++) {
+                        let coeff = compiledExpr.evaluate({n: n});
+                        sum += coeff * Math.pow((x - x0), n);
+                    }
+                    
+                    // Clip Werte, damit der Graph nicht explodiert
+                    if (sum > 50) sum = NaN; 
+                    if (sum < -50) sum = NaN;
+
+                    xValues.push(x);
+                    yValues.push(sum);
+                }
+
+                // Plotly Daten
+                const trace1 = {
+                    x: xValues,
+                    y: yValues,
+                    mode: 'lines',
+                    name: `S_${N}(x)`,
+                    line: {color: '#4f46e5', width: 3}
+                };
+
+                // Layout: Konvergenzbereich als Hintergrundshape
+                const shapes = [];
+                if (cachedRadius !== Infinity && !isNaN(cachedRadius)) {
+                    shapes.push({
+                        type: 'rect',
+                        xref: 'x', yref: 'paper',
+                        x0: x0 - cachedRadius,
+                        y0: 0,
+                        x1: x0 + cachedRadius,
+                        y1: 1,
+                        fillcolor: 'rgba(34, 197, 94, 0.15)', // Grüner Bereich
+                        line: {width: 0},
+                        layer: 'below'
+                    });
+                    // Vertikale Linien für Radius
+                    shapes.push({ type: 'line', x0: x0-cachedRadius, y0: 0, x1: x0-cachedRadius, y1: 1, xref: 'x', yref: 'paper', line: {color: 'red', dash: 'dot'} });
+                    shapes.push({ type: 'line', x0: x0+cachedRadius, y0: 0, x1: x0+cachedRadius, y1: 1, xref: 'x', yref: 'paper', line: {color: 'red', dash: 'dot'} });
+                }
+
+                const layout = {
+                    title: `Partialsumme bis N=${N}`,
+                    xaxis: {title: 'x', range: [startX, endX]},
+                    yaxis: {title: 'y', range: [-10, 10]},
+                    shapes: shapes,
+                    showlegend: true
+                };
+
+                Plotly.newPlot('plotDiv', [trace1], layout, {responsive: true});
+
+            } catch (err) {
+                console.error("Plotting error:", err);
+            }
+        }
+
+        // Start beim Laden
+        updateApp();
+    </script>
+</body>
+</html>
