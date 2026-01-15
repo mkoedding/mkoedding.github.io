@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lerngruppe Mathematik Klasse 5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #333;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .material-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .material-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .material-item h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .material-item p {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        a {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        a:hover {
+            background: #764ba2;
+        }
+        
+        a.pdf {
+            background: #e74c3c;
+        }
+        
+        a.pdf:hover {
+            background: #c0392b;
+        }
+        
+        a.video {
+            background: #e67e22;
+        }
+        
+        a.video:hover {
+            background: #d35400;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            margin-bottom: 20px;
+            padding-left: 30px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 13px;
+            height: 13px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        
+        footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Mathematik Klasse 5</h1>
+            <p>Lerngruppe Material und Ressourcen</p>
+        </header>
+        
+        <div class="content">
+            <!-- Thema 1 -->
+            <div class="section">
+                <h2>📊 Woche 1-2: Natürliche Zahlen</h2>
+                <div class="material-list">
+                    <div class="material-item">
+                        <h3>Einführung in Natürliche Zahlen</h3>
+                        <p>Stellenwert und Zahldarstellung</p>
+                        <div class="btn-group">
+                            <a href="#">📄 Folien</a>
+                            <a href="#" class="video">🎥 Video (10 min)</a>
+                            <a href="#">✏️ Aufgaben</a>
+                            <a href="#">✓ Lösungen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Thema 2 -->
+            <div class="section">
+                <h2>📊 Woche 3-4: Grundrechenarten</h2>
+                <div class="material-list">
+                    <div class="material-item">
+                        <h3>Addition, Subtraktion, Multiplikation und Division</h3>
+                        <p>Grundrechenarten mit schriftlichen Verfahren</p>
+                        <div class="btn-group">
+                            <a href="#">📄 Folien</a>
+                            <a href="#" class="video">🎥 Video (12 min)</a>
+                            <a href="#">✏️ Aufgaben</a>
+                            <a href="#">✓ Lösungen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Thema 3 -->
+            <div class="section">
+                <h2>📊 Woche 5-6: Teilbarkeit & Brüche</h2>
+                <div class="material-list">
+                    <div class="material-item">
+                        <h3>Teilbarkeitsregeln, Primzahlen und erste Bruchkonzepte</h3>
+                        <p>Vertiefung von Teilbarkeit und Einführung Brüche</p>
+                        <div class="btn-group">
+                            <a href="#">📄 Folien</a>
+                            <a href="#" class="video">🎥 Video (14 min)</a>
+                            <a href="#">✏️ Aufgaben</a>
+                            <a href="#">✓ Lösungen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lerntheke Section -->
+            <div class="section">
+                <h2>🏪 Lerntheke</h2>
+                <div class="material-item">
+                    <h3>Komplettes Lerntheken-Material</h3>
+                    <p>Stationen zum eigenständigen Lernen mit verschiedenen Schwierigkeitsstufen (A, B, C)</p>
+                    <div class="btn-group">
+                        <a href="#" class="pdf">📄 PDF herunterladen</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zeitplan Section -->
+            <div class="section">
+                <h2>📅 Lernplan (6 Wochen)</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>Woche 1-2:</strong> Natürliche Zahlen und Stellenwert
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 3-4:</strong> Grundrechenarten üben
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Woche 5-6:</strong> Teilbarkeit, Brüche & Wiederholung
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Erstellt für die Lerngruppe | Alle Materialien © 2024</p>
+        </footer>
+    </div>
+</body>
+</html>
