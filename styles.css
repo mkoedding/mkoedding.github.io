@@ -1,89 +1,652 @@
+/* ============================================
+   Marvin Ködding – Website Styles
+   Farbschema: Meerblau-Türkis (passend zum
+   Klasse-5-Lehrmaterial)
+   ============================================ */
+
+:root {
+    /* Markenfarben */
+    --color-accent: #2B7A8C;
+    --color-accent-dark: #1A4A55;
+    --color-accent-light: #E8F2F4;
+    --color-warm: #D4814A;
+
+    /* Neutrale Farben */
+    --color-text: #1F2937;
+    --color-text-muted: #4B5563;
+    --color-border: #E5E7EB;
+    --color-bg: #FFFFFF;
+    --color-bg-alt: #F9FAFB;
+
+    /* Plattform-Farben */
+    --color-youtube: #FF0000;
+    --color-instagram: #E4405F;
+    --color-tiktok: #000000;
+    --color-github: #181717;
+
+    /* Typografie */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --font-serif: Georgia, "Times New Roman", serif;
+
+    /* Layout */
+    --max-width: 1140px;
+    --max-width-narrow: 760px;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+}
+
+/* ============================================
+   Basis
+   ============================================ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-text);
+    background: var(--color-bg);
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    color: var(--color-accent-dark);
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.25;
+    color: var(--color-accent-dark);
+    margin: 0 0 0.6em 0;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 2em; }
+h3 { font-size: 1.2rem; }
+
+p { margin: 0 0 1em 0; }
+
+/* ============================================
+   Layout-Container
+   ============================================ */
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.container-narrow {
+    max-width: var(--max-width-narrow);
+}
+
+main > section {
+    padding: 3rem 0;
+}
+
+main > section:first-child {
+    padding-top: 2rem;
+}
+
+/* ============================================
+   Header und Navigation
+   ============================================ */
+
+.site-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
+}
+
+.main-nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.nav-brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: var(--color-accent-dark);
+}
+
+.nav-brand:hover { color: var(--color-accent); }
+
+.nav-links {
+    list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
 }
 
-header {
-    background: #333;
-    color: white;
-    padding: 1rem 0;
+.nav-links a {
+    text-decoration: none;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    padding: 0.25rem 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
 }
 
-header h1 {
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--color-accent-dark);
+    border-bottom-color: var(--color-accent);
+}
+
+/* ============================================
+   Hero (Startseite)
+   ============================================ */
+
+.hero {
+    background: linear-gradient(135deg,
+                var(--color-accent-light) 0%,
+                #FFFFFF 100%);
+    padding: 4rem 0 5rem 0;
+}
+
+.hero-content {
+    max-width: var(--max-width-narrow);
+    margin: 0 auto;
+    padding: 0 1.5rem;
     text-align: center;
 }
 
-nav ul {
-    list-style: none;
-    text-align: center;
-    padding: 0;
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
 }
 
-nav ul li {
-    display: inline;
-    margin: 0 15px;
+.hero-tagline {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
 }
 
-nav ul li a {
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background: var(--color-accent);
     color: white;
+}
+
+.btn-primary:hover {
+    background: var(--color-accent-dark);
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.btn-secondary:hover {
+    background: var(--color-accent-light);
+    color: var(--color-accent-dark);
+}
+
+/* ============================================
+   Social-Media-Bereich (Hauptattraktion)
+   ============================================ */
+
+.social-section {
+    background: var(--color-bg);
+}
+
+.section-intro {
+    text-align: center;
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto 2.5rem auto;
+}
+
+.social-section h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.social-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-text);
+    background: white;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    box-shadow: var(--shadow);
+}
+
+.social-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
     text-decoration: none;
 }
 
-main {
-    padding: 1rem;
+.social-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    background: var(--color-bg-alt);
 }
 
-section {
-    margin-bottom: 2rem;
+.social-card.youtube .social-icon { color: var(--color-youtube); }
+.social-card.youtube:hover { border-color: var(--color-youtube); }
+
+.social-card.instagram .social-icon { color: var(--color-instagram); }
+.social-card.instagram:hover { border-color: var(--color-instagram); }
+
+.social-card.tiktok .social-icon { color: var(--color-tiktok); }
+.social-card.tiktok:hover { border-color: var(--color-tiktok); }
+
+.social-card.github .social-icon { color: var(--color-github); }
+.social-card.github:hover { border-color: var(--color-github); }
+
+.social-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
 }
 
-#papers div {
-    margin: 1rem 0;
-    padding: 1rem;
-    border: 1px solid #ddd;
+.social-platform {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-accent-dark);
 }
 
-#projects div {
-    margin: 1rem 0;
-    padding: 1rem;
-    border: 1px solid #ddd;
+.social-handle {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
 }
 
-footer {
+.social-note {
     text-align: center;
-    background: #333;
-    color: white;
-    padding: 1rem 0;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin-top: 2rem;
+    margin-bottom: 0;
 }
 
-/* Tabelle im Lebenslauf */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
+/* ============================================
+   Übersicht-Bereich (Was findest du hier?)
+   ============================================ */
+
+.overview-section {
+    background: var(--color-bg-alt);
+}
+
+.overview-section h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.overview-card {
+    position: relative;
+    padding: 1.75rem;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    box-shadow: var(--shadow);
+}
+
+.overview-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-accent);
+    text-decoration: none;
+}
+
+.overview-card h3 {
+    margin-top: 0;
+    color: var(--color-accent-dark);
+}
+
+.overview-card p {
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+}
+
+.card-arrow {
+    position: absolute;
+    top: 1.75rem;
+    right: 1.75rem;
+    color: var(--color-accent);
+    font-size: 1.5rem;
+    transition: transform 0.15s;
+}
+
+.overview-card:hover .card-arrow {
+    transform: translateX(4px);
+}
+
+/* ============================================
+   About und Kontakt
+   ============================================ */
+
+.about-section h2,
+.contact-section h2 {
+    margin-top: 0;
+}
+
+/* ============================================
+   Forschungsseite
+   ============================================ */
+
+.page-header {
+    background: linear-gradient(135deg,
+                var(--color-accent-light) 0%,
+                #FFFFFF 100%);
+    padding: 3rem 0;
+}
+
+.page-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.page-tagline {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.toc-section {
+    padding: 1rem 0 0 0;
+}
+
+.page-toc {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.page-toc a {
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+.page-toc a:hover {
+    color: var(--color-accent-dark);
+}
+
+/* Filter */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    border: 1px solid var(--color-border);
+    background: white;
+    color: var(--color-text-muted);
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.filter-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-dark);
+}
+
+.filter-btn.active {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+/* Eintrag (Paper / Projekt) */
+.entry {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.entry:last-child {
+    border-bottom: none;
+}
+
+.entry-meta {
+    margin-bottom: 0.5rem;
+}
+
+.entry-venue {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-warm);
+}
+
+.entry h3 {
+    margin: 0 0 0.75rem 0;
+}
+
+.entry p {
+    color: var(--color-text-muted);
+}
+
+.entry-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.entry-note {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* CV */
+.cv-block {
     margin-bottom: 2rem;
 }
 
-table th, table td {
-    text-align: left;
-    padding: 10px;
-    border: 1px solid #ddd;
-    vertical-align: top;
+.cv-block h3 {
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
 }
 
-table th {
-    background-color: #f4f4f4;
-    width: 30%;
-}
-
-table td ul {
-    margin: 0;
-    padding: 0;
+.cv-list {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-table td ul li {
-    margin-bottom: 5px;
+.cv-list li {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--color-border);
+}
+
+.cv-list li:last-child {
+    border-bottom: none;
+}
+
+.cv-period {
+    font-weight: 600;
+    color: var(--color-accent-dark);
+    font-variant-numeric: tabular-nums;
+}
+
+.cv-detail {
+    color: var(--color-text);
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+
+.site-footer {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+.site-footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.site-footer p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.site-footer a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.site-footer a:hover {
+    color: var(--color-accent-dark);
+    text-decoration: underline;
+}
+
+/* ============================================
+   Responsive (mobile)
+   ============================================ */
+
+@media (max-width: 600px) {
+    .main-nav {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .hero {
+        padding: 2.5rem 0 3rem 0;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn {
+        text-align: center;
+    }
+
+    .cv-list li {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+    }
+
+    .cv-period {
+        font-size: 0.88rem;
+    }
 }
