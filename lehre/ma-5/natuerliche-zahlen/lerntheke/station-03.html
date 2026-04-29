@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lerntheke Station 3 — Zauberquadrate mit ganzen Zahlen.">
+    <title>Station 3 — Zauberquadrate — Marvin Ködding</title>
+    <link rel="stylesheet" href="../../../../styles.css">
+    <link rel="stylesheet" href="../../../../lehre.css">
+    <link rel="stylesheet" href="../../../../lerntheke.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="math-backdrop" aria-hidden="true">
+        <span class="math-echo" style="--x: 8%; --y: 14%; --rot: -6deg;">Σ = 0</span>
+        <span class="math-echo" style="--x: 78%; --y: 78%; --rot: 5deg;">3 × 3</span>
+    </div>
+
+    <header class="site-header">
+        <nav class="main-nav" aria-label="Hauptnavigation">
+            <a href="../../../../index.html" class="nav-brand">
+                <span class="brand-mark">M·K</span>
+                <span class="brand-name">Marvin Ködding</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../../../../index.html">Start</a></li>
+                <li><a href="../../../index.html" class="active">Lehre</a></li>
+                <li><a href="../../../../forschung.html">Forschung</a></li>
+                <li><a href="../../../../index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="station-page">
+        <section class="station-page-header">
+            <div class="container">
+                <span class="breadcrumb">
+                    <a href="../../../../index.html">Start</a> &nbsp;·&nbsp;
+                    <a href="../../../index.html">Lehre</a> &nbsp;·&nbsp;
+                    <a href="../../index.html">Klasse 5</a> &nbsp;·&nbsp;
+                    <a href="../index.html">Reihe</a> &nbsp;·&nbsp;
+                    <a href="index.html">Lerntheke</a> &nbsp;·&nbsp;
+                    <strong>Station 3</strong>
+                </span>
+
+                <div class="station-page-title">
+                    <span class="station-page-num">03</span>
+                    <div>
+                        <h1>Zauberquadrate</h1>
+                        <p class="station-page-tagline">
+                            Knobelaufgabe: Reihen- und Spaltensummen müssen
+                            der Zahl im Dach entsprechen.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="station-page-actions">
+                    <a href="index.html" class="action-btn action-secondary">
+                        <span aria-hidden="true">←</span> Zur Übersicht
+                    </a>
+                    <button type="button" class="action-btn action-secondary" onclick="window.print()">
+                        Drucken
+                        <span aria-hidden="true">⎙</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="station-section-block">
+            <div class="container">
+
+                <div class="station-block">
+                    <h2 class="station-section-titel">Aufgabe</h2>
+                    <p>
+                        Die Zahl im Dach zeigt, welche Summe sich in allen
+                        Reihen und Spalten ergeben muss. Übertrage die
+                        Zauberquadrate in dein Heft und fülle sie aus.
+                    </p>
+                    <p class="aufgabe-hinweis">
+                        Das ist wie Sudoku. Lies die Aufgabe nochmal,
+                        bevor du fragst!
+                    </p>
+
+                    <div class="aufgabe-block">
+                        <p class="aufgabe-label">
+                            Die Zauberquadrate findest du auf dem
+                            ausliegenden Aufgabenblatt.
+                        </p>
+                        <p>
+                            <a href="../theke-01.pdf" class="resource-link-inline">
+                                <span aria-hidden="true">📄</span>
+                                Aufgabenblatt als PDF öffnen
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="station-block station-hinweise">
+                    <h2 class="station-section-titel">Hinweise</h2>
+                    <ol class="hinweis-list">
+                        <li class="hinweis-item">
+                            <button class="hinweis-toggle" type="button"
+                                    aria-expanded="false">
+                                <span class="hinweis-num">Tipp 1</span>
+                                <span class="hinweis-action">anzeigen</span>
+                            </button>
+                            <div class="hinweis-content" hidden>
+                                In einem Zauberquadrat sind alle <em>Reihen</em>,
+                                <em>Spalten</em> und manchmal auch die
+                                <em>Diagonalen</em> gleich groß. Die Summe
+                                steht im Dach.
+                            </div>
+                        </li>
+                        <li class="hinweis-item">
+                            <button class="hinweis-toggle" type="button"
+                                    aria-expanded="false">
+                                <span class="hinweis-num">Tipp 2</span>
+                                <span class="hinweis-action">anzeigen</span>
+                            </button>
+                            <div class="hinweis-content" hidden>
+                                Suche zuerst eine Reihe oder Spalte, in der
+                                schon zwei von drei Zahlen stehen. Dann kannst
+                                du die fehlende Zahl ausrechnen, indem du die
+                                beiden bekannten Zahlen von der Zielsumme
+                                abziehst.
+                            </div>
+                        </li>
+                        <li class="hinweis-item">
+                            <button class="hinweis-toggle" type="button"
+                                    aria-expanded="false">
+                                <span class="hinweis-num">Tipp 3</span>
+                                <span class="hinweis-action">anzeigen</span>
+                            </button>
+                            <div class="hinweis-content" hidden>
+                                Strategie für 3×3-Quadrate: Die Mitte ist immer
+                                gleich der Zielsumme geteilt durch 3. Wenn die
+                                Zielsumme also 0 ist, steht in der Mitte eine 0.
+                                Bei Zielsumme 6 wäre es eine 2.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="station-block station-loesung">
+                    <h2 class="station-section-titel">Lösung</h2>
+                    <details class="loesung-details">
+                        <summary class="loesung-summary">
+                            <span class="loesung-icon" aria-hidden="true">🔒</span>
+                            <span class="loesung-text">
+                                <strong>Lösung anzeigen</strong>
+                                <span class="loesung-warning">
+                                    Erst ansehen, wenn du es selbst versucht hast.
+                                </span>
+                            </span>
+                        </summary>
+                        <div class="loesung-content">
+                            <p>
+                                <em>Hier folgt die Lösung des Zauberquadrats —
+                                bitte trag die Zahlen aus deinem Aufgabenblatt
+                                ein. Eine Beispiel-Lösung für ein 3×3-Quadrat
+                                mit Zielsumme 0 sieht so aus:</em>
+                            </p>
+
+                            <table class="zauberquadrat-tabelle">
+                                <tbody>
+                                    <tr>
+                                        <td>+2</td>
+                                        <td>−3</td>
+                                        <td>+1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>−1</td>
+                                        <td>0</td>
+                                        <td>+1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>−1</td>
+                                        <td>+3</td>
+                                        <td>−2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p>
+                                <em>Probe:</em> Jede Reihe und jede Spalte
+                                ergibt 0. Auch die Diagonalen ergeben 0.
+                            </p>
+
+                            <p>
+                                <em>Lösungsweg:</em> Setze die Mitte als
+                                <strong>Zielsumme ÷ 3</strong>. Dann ergänze
+                                paarweise gegenüberliegende Felder so, dass
+                                ihre Summe ebenfalls 0 (bzw. die Zielsumme
+                                geteilt durch 3 mal 2) ergibt.
+                            </p>
+
+                            <div class="loesung-video">
+                                <p class="loesung-video-label">
+                                    Erklär-Video zur Strategie
+                                </p>
+                                <div class="video-wrapper">
+                                    <div class="video-placeholder" data-video-id="PLATZHALTER_ID">
+                                        <div class="placeholder-content">
+                                            <span class="placeholder-icon" aria-hidden="true">▶</span>
+                                            <p>
+                                                <strong>Video laden</strong><br>
+                                                Hinweis: Beim Klick werden Daten an YouTube
+                                                (Google) übertragen.
+                                            </p>
+                                            <button class="placeholder-btn" type="button">
+                                                Video von YouTube laden
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="station-nav">
+            <div class="container">
+                <div class="reihe-nav-grid">
+                    <a href="station-02.html" class="reihe-nav-link reihe-nav-back">
+                        <span class="nav-label">Vorherige Station</span>
+                        <span class="nav-target">
+                            <span aria-hidden="true">←</span> Kopfrechnen
+                        </span>
+                    </a>
+                    <a href="index.html" class="reihe-nav-link reihe-nav-next">
+                        <span class="nav-label">Zurück zur</span>
+                        <span class="nav-target">
+                            Übersicht <span aria-hidden="true">→</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-mark">M·K</div>
+            <p class="footer-copy">© 2026 Marvin Ködding · Materialien CC BY-SA 4.0</p>
+            <nav class="footer-nav" aria-label="Rechtliches">
+                <a href="../../../../impressum.html">Impressum &amp; Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="../../../../lerntheke.js"></script>
+    <script src="../../../../lehre.js"></script>
+</body>
+</html>

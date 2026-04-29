@@ -909,12 +909,21 @@
 
 /* ============================================================
    Resource-Links (PDF-Downloads pro Stunde)
+   Festes 2-Spalten-Grid: gleicher horizontaler und vertikaler
+   Abstand zwischen allen Karten.
    ============================================================ */
 
 .stunde-resources {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    max-width: 720px;
+}
+
+@media (max-width: 600px) {
+    .stunde-resources {
+        grid-template-columns: 1fr;
+    }
 }
 
 .resource-link {
