@@ -6,14 +6,85 @@
  *   2. Tabs    – mehrere gleichwertige Videos in .video-tabs
  *   3. Liste   – Hauptvideo + Vorschau-Karten in .video-list
  *
- * Alle drei nutzen denselben Two-Click-Mechanismus:
- * Erst beim expliziten Klick wird YouTube nachgeladen.
+ * Schul-Modus (Moodle-Variante):
+ *   URL mit ?moodle, ?schule oder ?embed=off versteckt alle
+ *   Video-Komponenten und zeigt nur PDFs.
+ *   Beispiel: .../natuerliche-zahlen/?moodle
  */
 (function() {
     'use strict';
 
     // ----------------------------------------------------------
-    // Hilfsfunktion: ein iframe für eine YouTube-ID erstellen
+    // Schul-Modus erkennen
+    // ----------------------------------------------------------
+    function isSchoolMode() {
+        var params = new URLSearchParams(window.location.search);
+        return params.has('moodle') ||
+               params.has('schule') ||
+               params.get('embed') === 'off';
+    }
+
+    // ----------------------------------------------------------
+    // Schul-Modus aktivieren
+    // ----------------------------------------------------------
+    function applySchoolMode() {
+        document.documentElement.classList.add('school-mode');
+
+        // Banner ganz oben einblenden (nach dem Header)
+        var banner = document.createElement('div');
+        banner.className = 'school-mode-banner';
+        banner.setAttribute('role', 'note');
+        banner.innerHTML =
+            '<div class="container">' +
+                '<div class="school-mode-banner-content">' +
+                    '<span class="school-mode-icon" aria-hidden="true">🎓</span>' +
+                    '<div class="school-mode-text">' +
+                        '<strong>Schul-Ansicht</strong> · ' +
+                        'Videos sind ausgeblendet. Es werden nur die ' +
+                        'Lückenskripte und Aufgabenblätter angezeigt.' +
+                    '</div>' +
+                    '<a href="' + window.location.pathname + '" class="school-mode-toggle">' +
+                        'Vollversion mit Videos →' +
+                    '</a>' +
+                '</div>' +
+            '</div>';
+
+        var header = document.querySelector('.site-header');
+        if (header && header.parentNode) {
+            header.parentNode.insertBefore(banner, header.nextSibling);
+        } else {
+            document.body.insertBefore(banner, document.body.firstChild);
+        }
+
+        // Statt der Video-Komponenten einen kompakten Hinweis einblenden
+        var videoContainers = document.querySelectorAll(
+            '.video-wrapper, .video-tabs, .video-list'
+        );
+        videoContainers.forEach(function(container) {
+            var notice = document.createElement('div');
+            notice.className = 'video-hidden-notice';
+            notice.innerHTML =
+                '<span class="video-hidden-icon" aria-hidden="true">▶</span>' +
+                '<span class="video-hidden-text">' +
+                    'Video ist in der Schul-Ansicht ausgeblendet.' +
+                '</span>';
+            container.parentNode.replaceChild(notice, container);
+        });
+
+        // In der Meta-Zeile jeder Stunde "Video" ggf. entfernen
+        document.querySelectorAll('.stunde-meta').forEach(function(meta) {
+            var text = meta.textContent;
+            if (text.indexOf('Video') !== -1) {
+                // Entferne alle Vorkommen von "Video..." bis zum nächsten "·" oder Ende
+                text = text.replace(/[^·]*Video[^·]*(·\s*)?/gi, '');
+                text = text.replace(/^\s*·\s*/, '').trim();
+                meta.textContent = text || 'PDF + Aufgaben';
+            }
+        });
+    }
+
+    // ----------------------------------------------------------
+    // YouTube-iframe für eine ID erzeugen
     // ----------------------------------------------------------
     function createYoutubeIframe(videoId) {
         var iframe = document.createElement('iframe');
@@ -31,10 +102,6 @@
         return iframe;
     }
 
-    // ----------------------------------------------------------
-    // Pattern 1 + 2 + Liste-Hauptvideo:
-    // Platzhalter durch iframe ersetzen
-    // ----------------------------------------------------------
     function loadInPlaceholder(placeholder) {
         var videoId = placeholder.dataset.videoId;
         if (!videoId || videoId === 'PLATZHALTER_ID') {
@@ -49,10 +116,7 @@
     }
 
     function initSinglePlaceholders() {
-        // Wirkt nur auf direkte .video-placeholder-Elemente
-        // (also Single + die einzelnen Tab-Panels + Liste-Main)
         document.querySelectorAll('.video-placeholder').forEach(function(p) {
-            // Click auf Container ODER Button
             p.addEventListener('click', function() { loadInPlaceholder(p); });
             var btn = p.querySelector('.placeholder-btn');
             if (btn) {
@@ -64,10 +128,6 @@
         });
     }
 
-    // ----------------------------------------------------------
-    // Pattern 2: Tabs
-    // Tab-Buttons schalten zwischen Panels um
-    // ----------------------------------------------------------
     function initTabs() {
         document.querySelectorAll('.video-tabs').forEach(function(tabs) {
             var buttons = tabs.querySelectorAll('.video-tab-btn');
@@ -90,10 +150,6 @@
         });
     }
 
-    // ----------------------------------------------------------
-    // Pattern 3: Liste
-    // Klick auf Vorschau-Karte tauscht Hauptvideo aus
-    // ----------------------------------------------------------
     function initVideoLists() {
         document.querySelectorAll('.video-list').forEach(function(list) {
             var main = list.querySelector('.video-list-main');
@@ -107,26 +163,23 @@
                         return;
                     }
 
-                    // Den ganzen Hauptvideo-Bereich neu aufbauen
                     main.innerHTML = '';
                     main.style.position = 'relative';
                     main.style.aspectRatio = '16 / 9';
                     main.appendChild(createYoutubeIframe(videoId));
 
-                    // Optional: Karten-Highlight aktualisieren
-                    cards.forEach(function(c) {
-                        c.dataset.active = 'false';
-                    });
+                    cards.forEach(function(c) { c.dataset.active = 'false'; });
                     card.dataset.active = 'true';
                 });
             });
         });
     }
 
-    // ----------------------------------------------------------
-    // Init
-    // ----------------------------------------------------------
     function init() {
+        if (isSchoolMode()) {
+            applySchoolMode();
+            return;
+        }
         initSinglePlaceholders();
         initTabs();
         initVideoLists();
