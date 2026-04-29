@@ -1,36 +1,28 @@
 /**
- * Math-Rendering mit KaTeX
+ * Math-Rendering mit KaTeX (lokal gehostet)
  *
  * Wird auf allen Lehre-Seiten geladen und rendert automatisch
  * mathematische Ausdrücke. Lädt KaTeX nur, wenn die Seite auch
  * Mathematik enthält (Performance-Optimierung).
  *
- * Syntax in HTML/Markdown:
- *   $...$      → inline-Mathe (z.B. $f(x) = x^2$)
- *   $$...$$    → display-Mathe (eigene Zeile, zentriert)
+ * Syntax:
+ *   $...$      → inline-Mathe
+ *   $$...$$    → display-Mathe
  *   \(...\)    → inline-Mathe (alternative Syntax)
  *   \[...\]    → display-Mathe (alternative Syntax)
  *
- * Beispiele in der Lerntheke:
- *   "Berechne $(-4) + (+3)$"
- *   "Die Lösung ist $$\frac{a+b}{c}$$"
- *
- * Datenschutz:
- *   KaTeX wird via cdn.jsdelivr.net geladen. Beim Aufruf wird
- *   die IP an Cloudflare übertragen. Falls das nicht erwünscht
- *   ist, KaTeX lokal in /vendor/katex/ ablegen und die URLs
- *   unten anpassen.
+ * KaTeX-Dateien liegen in /vendor/katex/.
+ * Siehe LOCAL_HOSTING.md für die Einrichtung.
  */
 (function() {
     'use strict';
 
-    var KATEX_VERSION = '0.16.11';
-    var KATEX_CDN = 'https://cdn.jsdelivr.net/npm/katex@' + KATEX_VERSION + '/dist/';
+    // Pfad zum lokalen KaTeX (relativ zum Repo-Root)
+    var KATEX_BASE = '/vendor/katex/';
+    var KATEX_CDN = '/vendor/katex/';
 
-    // Erkennen, ob die Seite Mathe-Ausdrücke enthält
     function pageHasMath() {
         var text = document.body.textContent || '';
-        // Heuristik: Suche nach $...$, $$...$$, \(...\) oder \[...\]
         return /\$[^$\n]+\$|\\\(|\\\[/.test(text);
     }
 
@@ -38,14 +30,12 @@
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
-        link.crossOrigin = 'anonymous';
         document.head.appendChild(link);
     }
 
     function loadScript(src, onLoad) {
         var script = document.createElement('script');
         script.src = src;
-        script.crossOrigin = 'anonymous';
         script.defer = true;
         if (onLoad) script.onload = onLoad;
         script.onerror = function() {
@@ -67,8 +57,6 @@
                     { left: '$',  right: '$',  display: false },
                     { left: '\\(', right: '\\)', display: false }
                 ],
-                // Bei Hinweisen, die hidden sind: trotzdem rendern,
-                // damit beim Aufklappen sofort sichtbar
                 ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
                 throwOnError: false,
                 errorColor: '#cc0000',
@@ -82,22 +70,18 @@
 
     function init() {
         if (!pageHasMath()) {
-            return;  // Stille Rückkehr, keine Mathe-Last für reine Textseiten
+            return;
         }
 
-        // Schritt 1: KaTeX-CSS laden
-        loadStylesheet(KATEX_CDN + 'katex.min.css');
+        loadStylesheet(KATEX_BASE + 'katex.min.css');
 
-        // Schritt 2: KaTeX-Core laden, dann auto-render
-        loadScript(KATEX_CDN + 'katex.min.js', function() {
-            // Schritt 3: Auto-render-Extension nachladen
-            loadScript(KATEX_CDN + 'contrib/auto-render.min.js', function() {
+        loadScript(KATEX_BASE + 'katex.min.js', function() {
+            loadScript(KATEX_BASE + 'contrib/auto-render.min.js', function() {
                 renderMath();
 
-                // Bei dynamisch geöffneten Hinweisen erneut rendern
+                // Bei aufgeklappten Hinweisen erneut rendern
                 document.addEventListener('click', function(e) {
                     if (e.target.closest('.hinweis-toggle, .loesung-summary')) {
-                        // Nach kurzer Verzögerung, damit das Element sichtbar ist
                         setTimeout(renderMath, 50);
                     }
                 });
