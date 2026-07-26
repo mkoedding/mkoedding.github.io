@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klasse 5a Mathe - Marvin Ködding</title>
+    <title>Klasse 5a Mathe - Herr Ködding</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -82,6 +82,11 @@
 
         tr:hover {
             background-color: #f9fbfd;
+        }
+
+        /* Versteckt die Zeilen standardmäßig */
+        .week-row {
+            display: none; 
         }
 
         /* Styling für Videos und Links */
@@ -172,9 +177,16 @@
                         <th width="30%">Aufgaben & Materialien</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
+                    <!-- Platzhalter, falls noch keine Woche aktiv ist -->
+                    <tr id="empty-state">
+                        <td colspan="4" style="text-align: center; padding: 3rem; color: #7f8c8d;">
+                            <em>Aktuell sind noch keine Unterrichtsinhalte freigeschaltet. <br>Die Materialien für die erste Schulwoche erscheinen hier automatisch am 10.08.2026.</em>
+                        </td>
+                    </tr>
+
                     <!-- Woche 1 -->
-                    <tr>
+                    <tr class="week-row" data-start-date="2026-08-10">
                         <td><strong>Woche 1</strong><br><small>10.08. - 14.08.</small></td>
                         <td>
                             <strong>Einführung Natürliche Zahlen</strong><br>
@@ -193,7 +205,7 @@
                     </tr>
 
                     <!-- Woche 2 -->
-                    <tr>
+                    <tr class="week-row" data-start-date="2026-08-17">
                         <td><strong>Woche 2</strong><br><small>17.08. - 21.08.</small></td>
                         <td>
                             <strong>Zahlen runden und ordnen</strong><br>
@@ -211,7 +223,7 @@
                     </tr>
 
                     <!-- Woche 3 -->
-                    <tr>
+                    <tr class="week-row" data-start-date="2026-08-24">
                         <td><strong>Woche 3</strong><br><small>24.08. - 28.08.</small></td>
                         <td>
                             <strong>Rechnen mit natürlichen Zahlen</strong><br>
@@ -235,9 +247,46 @@
     </div>
 
     <footer>
-        &copy; 2026 Marvin Ködding <br>
+        &copy; 2026 Marvin Ködding<br>
         <small>Diese Seite dient ausschließlich schulischen Zwecken.</small>
     </footer>
+
+    <!-- JavaScript für die automatische Freischaltung -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Aktuelles Datum ermitteln und Uhrzeit auf 00:00 setzen (für reinen Datumsvergleich)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Alle Zeilen mit der Klasse 'week-row' auswählen
+            const rows = document.querySelectorAll('.week-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                // Das Startdatum aus dem HTML-Attribut 'data-start-date' auslesen
+                const dateString = row.getAttribute('data-start-date');
+                
+                if (dateString) {
+                    const startDate = new Date(dateString);
+                    startDate.setHours(0, 0, 0, 0);
+
+                    // Wenn wir heute das Startdatum erreicht oder überschritten haben -> Zeile anzeigen
+                    if (today >= startDate) {
+                        row.style.display = 'table-row';
+                        visibleCount++;
+                    }
+                }
+            });
+
+            // Falls mindestens eine Woche sichtbar ist, den Platzhalter-Text ausblenden
+            if (visibleCount > 0) {
+                const emptyState = document.getElementById('empty-state');
+                if (emptyState) {
+                    emptyState.style.display = 'none';
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
