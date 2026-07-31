@@ -1196,40 +1196,77 @@
         <small>Diese Seite dient ausschließlich schulischen Zwecken.</small>
     </footer>
 
-    <!-- JavaScript für die automatische Freischaltung -->
+    <!-- JavaScript für die automatische Freischaltung & geheimen Testmodus -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Aktuelles Datum ermitteln und Uhrzeit auf 00:00 setzen (für reinen Datumsvergleich)
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            // Alle Zeilen mit der Klasse 'week-row' auswählen
             const rows = document.querySelectorAll('.week-row');
-            let visibleCount = 0;
+            const emptyState = document.getElementById('empty-state');
+            const secretButton = document.querySelector('header h1'); // Die Überschrift als geheimer Schalter
+            
+            let isTestMode = false;
+            let clickCount = 0;
+            let clickTimer;
 
-            rows.forEach(row => {
-                // Das Startdatum aus dem HTML-Attribut 'data-start-date' auslesen
-                const dateString = row.getAttribute('data-start-date');
+            // Funktion, die die Sichtbarkeit basierend auf Datum und Testmodus regelt
+            function updateVisibility() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
                 
-                if (dateString) {
-                    const startDate = new Date(dateString);
-                    startDate.setHours(0, 0, 0, 0);
+                let visibleCount = 0;
 
-                    // Wenn wir heute das Startdatum erreicht oder überschritten haben -> Zeile anzeigen
-                    if (today >= startDate) {
-                        row.style.display = 'table-row';
-                        visibleCount++;
+                rows.forEach(row => {
+                    const dateString = row.getAttribute('data-start-date');
+                    
+                    if (dateString) {
+                        const startDate = new Date(dateString);
+                        startDate.setHours(0, 0, 0, 0);
+
+                        // Zeile anzeigen, wenn Testmodus AKTIV ist ODER das Datum erreicht wurde
+                        if (isTestMode || today >= startDate) {
+                            row.style.display = 'table-row';
+                            visibleCount++;
+                        } else {
+                            // Andernfalls wieder verstecken
+                            row.style.display = 'none';
+                        }
                     }
-                }
-            });
+                });
 
-            // Falls mindestens eine Woche sichtbar ist, den Platzhalter-Text ausblenden
-            if (visibleCount > 0) {
-                const emptyState = document.getElementById('empty-state');
+                // Platzhaltertext ein- oder ausblenden
                 if (emptyState) {
-                    emptyState.style.display = 'none';
+                    emptyState.style.display = visibleCount > 0 ? 'none' : 'table-row';
                 }
             }
+
+            // Der "Easter Egg"-Klick-Zähler
+            if (secretButton) {
+                // Den Mauszeiger nicht verändern, damit es geheim bleibt!
+                secretButton.style.cursor = "default"; 
+                // Verhindert, dass der Text beim schnellen Klicken markiert wird
+                secretButton.style.userSelect = "none"; 
+
+                secretButton.addEventListener('click', function() {
+                    clickCount++;
+                    
+                    // Den Timer zurücksetzen
+                    clearTimeout(clickTimer);
+                    
+                    // Wenn 3 Mal geklickt wurde
+                    if (clickCount >= 3) {
+                        isTestMode = !isTestMode; // Modus umschalten (an/aus)
+                        updateVisibility();       // Tabelle sofort aktualisieren
+                        clickCount = 0;           // Zähler wieder auf 0 setzen
+                    }
+
+                    // Zähler automatisch auf 0 setzen, wenn 1,5 Sekunden lang nicht geklickt wird
+                    clickTimer = setTimeout(() => {
+                        clickCount = 0;
+                    }, 1500);
+                });
+            }
+
+            // Beim ersten Laden der Seite einmal ausführen
+            updateVisibility();
         });
     </script>
 
