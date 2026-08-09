@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9WU Informatik - Marvin Ködding</title>
+    <title>WU Informatik 9: Webprogrammierung - Marvin Ködding</title>
     <style>
         :root {
     --primary-color: #2c3e50;
@@ -14,6 +14,7 @@
     --text-color: #2f3640;
     --text-muted: #6b7684;
     --table-border: #e3e8ee;
+    --unit-bg: #eaf1f8;
     --video-color: #d64541;
     --solution-color: #1e8449;
     --radius: 8px;
@@ -64,10 +65,10 @@ header p   { margin: 0.4rem 0 0; opacity: 0.75; font-size: 0.95rem; }
 table { width: 100%; border-collapse: collapse; text-align: left; }
 
 /* Spaltenbreiten: Woche schmal, Thema und Aufgaben breit */
-th:nth-child(1), td:nth-child(1) { width: 12%; }
-th:nth-child(2), td:nth-child(2) { width: 32%; }
-th:nth-child(3), td:nth-child(3) { width: 16%; }
-th:nth-child(4), td:nth-child(4) { width: 40%; }
+th:nth-child(1), td:nth-child(1) { width: 15%; }
+th:nth-child(2), td:nth-child(2) { width: 34%; }
+th:nth-child(3), td:nth-child(3) { width: 13%; }
+th:nth-child(4), td:nth-child(4) { width: 38%; }
 
 th, td {
     padding: 0.9rem 1.1rem;
@@ -100,8 +101,55 @@ td:nth-child(2) strong { display: block; margin-bottom: 0.25rem; font-size: 1rem
 td:nth-child(2)        { color: var(--text-muted); }
 td:nth-child(2) strong { color: var(--text-color); }
 
-/* Zeilen sind bis zum Stichtag ausgeblendet, das JS setzt sie sichtbar */
-.week-row { display: none; }
+/* Zeilen sind bis zum Stichtag ausgeblendet, das JS blendet sie ein */
+.week-row, .unit-row { display: none; }
+.week-row.is-visible, .unit-row.is-visible { display: table-row; }
+
+/* Einheiten-Block: gilt fuer alle Wochen darunter */
+.unit-row > td {
+    background-color: var(--unit-bg);
+    border-left: 4px solid var(--accent-color);
+    border-bottom: 1px solid #d7dee6;
+    padding: 1.1rem 1.1rem;
+    width: auto;
+}
+
+.unit-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+}
+
+.unit-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+}
+
+.unit-title {
+    margin: 0.1rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.unit-meta {
+    margin: 0.15rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.unit-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+}
 
 /* Laufende Woche hervorheben */
 .week-row.current { background-color: #eaf4fd; box-shadow: inset 3px 0 0 var(--accent-color); }
@@ -135,15 +183,8 @@ td:nth-child(2) strong { color: var(--text-color); }
 .video-link:hover { background-color: #b03a37; }
 .video-link::before { content: "▶"; margin-right: 6px; font-size: 0.75rem; }
 
-/* Wochenplan und Lösungen */
-.material-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 0.85rem;
-}
-
-.plan-link, .material-links .solution-link {
+/* Wochenplaene, Material und Loesungen */
+.plan-link, .extra-link, .solution-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -163,14 +204,57 @@ td:nth-child(2) strong { color: var(--text-color); }
 .plan-link:hover { background-color: var(--accent-dark); border-color: var(--accent-dark); }
 .plan-link::before { content: "📄"; font-size: 0.9rem; }
 
-.material-links .solution-link {
+.extra-link {
+    background-color: transparent;
+    color: var(--accent-dark);
+    border: 1px solid var(--accent-color);
+}
+.extra-link:hover { background-color: var(--accent-color); color: white; }
+.extra-link::before { content: "📁"; font-size: 0.9rem; }
+
+.solution-link {
     background-color: transparent;
     color: var(--solution-color);
     border: 1px solid var(--solution-color);
-    margin-left: 0;
 }
-.material-links .solution-link:hover { background-color: var(--solution-color); color: white; }
-.material-links .solution-link::before { content: "✓"; font-weight: 700; }
+.solution-link:hover { background-color: var(--solution-color); color: white; }
+.solution-link::before { content: "✓"; font-weight: 700; }
+
+/* Verweis auf ein Aufgabenblatt in der Aufgabenliste */
+.blatt-link {
+    font-weight: 600;
+    color: var(--accent-dark);
+    text-decoration: none;
+    border-bottom: 1px solid #b9d3ea;
+}
+.blatt-link:hover { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+
+/* Verweis auf den Lektionstext */
+.lesson-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--accent-dark);
+    background-color: #e4eef8;
+    border: 1px solid #c6dcf0;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.lesson-link:hover { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
+.lesson-link::before { content: "📖"; font-size: 0.9rem; }
+
+/* Einzeldokument in einer Woche, etwa der Selbsteinschätzungsbogen */
+.week-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 0.6rem;
+}
+.week-links .plan-link { font-size: 0.84rem; padding: 0.3rem 0.65rem; }
 
 /* Aufgabenliste */
 ul.task-list { list-style-type: none; padding: 0; margin: 0; }
@@ -193,19 +277,6 @@ ul.task-list li::before {
     border-radius: 50%;
     background-color: var(--accent-color);
 }
-
-/* Lösungslink an einer einzelnen Aufgabe */
-ul.task-list .solution-link {
-    font-size: 0.8rem;
-    color: var(--solution-color);
-    text-decoration: none;
-    margin-left: 6px;
-    border: 1px solid var(--solution-color);
-    padding: 0 5px;
-    border-radius: 3px;
-    white-space: nowrap;
-}
-ul.task-list .solution-link:hover { background-color: var(--solution-color); color: white; }
 
 /* Leerzustand */
 #empty-state td { color: var(--text-muted); }
@@ -233,6 +304,8 @@ a:focus-visible {
     table, tbody, tr, td { display: block; width: 100%; }
     thead { display: none; }
 
+    .week-row.is-visible, .unit-row.is-visible { display: block; }
+
     tr.week-row {
         background-color: var(--card-bg);
         border-radius: var(--radius);
@@ -242,6 +315,15 @@ a:focus-visible {
     }
     tr.week-row:hover { background-color: var(--card-bg); }
     tr.week-row.current { box-shadow: inset 3px 0 0 var(--accent-color), 0 1px 3px rgba(16,24,40,0.08); }
+
+    tr.unit-row { margin: 1.5rem 0 1rem; }
+    tr.unit-row:first-child { margin-top: 0; }
+    .unit-row > td {
+        border-radius: var(--radius);
+        border-bottom: none;
+        box-shadow: 0 1px 3px rgba(16,24,40,0.08);
+    }
+    .unit-head { align-items: flex-start; }
 
     th:nth-child(n), td:nth-child(n) { width: auto; }
 
@@ -273,7 +355,7 @@ a:focus-visible {
 <body>
 
     <header>
-        <h1>💻 9WU - Informatik</h1>
+        <h1>💻 WU Informatik 9: Webprogrammierung</h1>
     </header>
 
     <div class="container">
@@ -283,71 +365,321 @@ a:focus-visible {
             <table>
                 <thead>
                     <tr>
-                        <th width="15%">Zeitraum / Woche</th>
-                        <th width="30%">Inhalte im Unterricht</th>
-                        <th width="25%">Erklärvideos / Tutorials</th>
-                        <th width="30%">Aufgaben & Materialien</th>
+                        <th>Lektion</th>
+                        <th>Inhalte im Unterricht</th>
+                        <th>Lektionstext</th>
+                        <th>Aufgabenblätter</th>
                     </tr>
                 </thead>
+                <!-- Tabellenkoerper: pro Einheit ein Block, darunter die Wochen -->
                 <tbody id="table-body">
-                    <!-- Platzhalter, falls noch keine Woche aktiv ist -->
                     <tr id="empty-state">
                         <td colspan="4" style="text-align: center; padding: 3rem; color: #7f8c8d;">
-                            <em>Aktuell sind noch keine Unterrichtsinhalte freigeschaltet. <br>Die Materialien für die erste Schulwoche erscheinen hier automatisch am 10.08.2026.</em>
+                            <em>Aktuell sind noch keine Unterrichtsinhalte freigeschaltet.</em>
                         </td>
                     </tr>
 
-                    <!-- Woche 1 -->
-                    <tr class="week-row" data-start-date="2026-08-10">
-                        <td><strong>Woche 1</strong><br><small>10.08. - 14.08.</small></td>
+                    <tr class="unit-row" data-start-date="2027-04-22">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Thema 4</p>
+                                    <h2 class="unit-title">PHP</h2>
+                                    <p class="unit-meta">22.04.2027 - 24.06.2027 &middot; 8 Termine</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-06-24">
                         <td>
-                            <strong>Was ist ein Algorithmus?</strong><br>
-                            Einführung in die Informatik. Wir klären, wie Computer "denken" und schreiben unsere ersten Handlungsanweisungen als Pseudocode.
+                            <strong>Abschluss</strong><br>
+                            <small>Do 24.06.2027<br>1 Termin</small>
                         </td>
                         <td>
-                            <a href="#" class="video-link">Algorithmen einfach erklärt</a><br>
-                            <a href="#" class="video-link">EVA-Prinzip</a>
+                            <strong>Projekte und Kursabschluss</strong>
+                            JavaScript und PHP verbinden, Vorstellung der fertigen Zoo-Websites.
                         </td>
-                        <td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Projekte</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
                             <ul class="task-list">
-                                <li>Arbeitsblatt: Roboter steuern <a href="#" class="solution-link">Lösung</a></li>
-                                <li>Schreibe einen Algorithmus für das Zähneputzen.</li>
+                                <li><a href="material/projekte.pdf" class="blatt-link">Projekte</a>: Tierpfleger-Portal mit Frontend-Prüfung über event.preventDefault() und Backend-Prüfung in geheim.php, Tier-Abstimmung mit stimmen.txt und Auswertung über file(), interaktive Fütterung per fetch() ohne Neuladen.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-06-10">
+                        <td>
+                            <strong>Lektion 13</strong><br>
+                            <small>Do 10.06. bis 17.06.2027<br>2 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Arbeit mit Dateien</strong>
+                            Dateien schreiben, lesen und fortschreiben, damit die Gästebucheinträge erhalten bleiben.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 13</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt17.pdf" class="blatt-link">Blatt 17, Aufgabe 2</a>: Die Einträge zusätzlich an gaestebuch.txt anhängen und dabei fälschungssicher trennen, eine Datei gb-lesen.php, die alle Nachrichten getrennt ausgibt, und ein Knopf „Gästebuch lesen“ auf gaestebuch.html.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-05-20">
+                        <td>
+                            <strong>Lektion 12</strong><br>
+                            <small>Do 20.05. bis 03.06.2027<br>2 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Formularauswertung</strong>
+                            Absenden eines Formulars, gesetzte Variablen überprüfen, einfache und mehrfache Werte auf dem Server verarbeiten.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 12</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt17.pdf" class="blatt-link">Blatt 17, Aufgabe 1</a>: gb-schreiben.php wird zum PHP-Programm: es dankt für den Eintrag, spricht die Person mit dem Namen aus dem Formular an und zeigt den Text aus dem mehrzeiligen Feld. Die Übermittlung läuft in jedem Fall über post.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-04-22">
+                        <td>
+                            <strong>Lektion 11</strong><br>
+                            <small>Do 22.04. bis 13.05.2027<br>3 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Einführung in PHP</strong>
+                            Server und XAMPP einrichten, Ausgabe mit echo, Variablen und Funktionen, Ausdrücke, Fallunterscheidung und Schleifen.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 11</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt16.pdf" class="blatt-link">Blatt 16</a>: Eine php-Datei, die eine vollständige Seite mit 120 Würfelergebnissen in 10 Zeilen zu je 12 Zahlen erzeugt, dabei mitzählt, wie oft jede Augenzahl fällt, und die Häufigkeiten am Ende ausgibt (rand).</li>
                             </ul>
                         </td>
                     </tr>
 
-                    <!-- Woche 2 -->
-                    <tr class="week-row" data-start-date="2026-08-17">
-                        <td><strong>Woche 2</strong><br><small>17.08. - 21.08.</small></td>
+                    <tr class="unit-row" data-start-date="2027-02-04">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Thema 3</p>
+                                    <h2 class="unit-title">JavaScript</h2>
+                                    <p class="unit-meta">04.02.2027 - 15.04.2027 &middot; 9 Termine</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-04-08">
                         <td>
-                            <strong>Erste Schritte in Python</strong><br>
-                            Wir richten unsere Programmierumgebung ein und schreiben das erste "Hello World"-Programm. Umgang mit der Konsole (print und input).
+                            <strong>Lektion 10</strong><br>
+                            <small>Do 08.04. bis 15.04.2027<br>2 Termine</small>
                         </td>
                         <td>
-                            <a href="#" class="video-link">Python: print() und input()</a>
+                            <strong>Tastatur und Formulare auswerten</strong>
+                            Aktionen auf Tastaturereignisse, Formulare im Browser auswerten und Formulardaten setzen.
                         </td>
-                        <td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 10</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
                             <ul class="task-list">
-                                <li>Installiere Python zuhause (Anleitung auf Moodle).</li>
-                                <li>Programmiere einen einfachen Chatbot, der nach dem Namen fragt.</li>
+                                <li><a href="material/blatt14.pdf" class="blatt-link">Blatt 14</a>: Tier-Quiz auf tiere.html: Frage, Eingabefeld mit ID, Button und ein leerer Absatz quiz-ergebnis. Beim Klick den Wert auslesen, per if-else prüfen und das Ergebnis grün oder rot ausgeben.</li>
+                                <li><a href="material/blatt15.pdf" class="blatt-link">Blatt 15</a>: Ticket-Automat: Eingabefeld für das Alter und Button, das Alter in einer Variablen speichern und den Preis über if und else if bestimmen (unter 6 kostenlos, 6 bis 17 fünf Euro, ab 18 zehn Euro), Ausgabe in einem echten HTML-Element.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-02-25">
+                        <td>
+                            <strong>Lektion 9</strong><br>
+                            <small>Do 25.02. bis 18.03.2027<br>4 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Events und Manipulation der Seite</strong>
+                            Aktionen auf Knopfdruck und Mausereignisse, Event-Handler, jQuery, Ein- und Ausblenden, CSS-Änderungen und Klassenzugehörigkeit.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 9</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt10.pdf" class="blatt-link">Blatt 10</a>: shop.html aus der Vorlage shop-vorlage.html: die Eingabefelder beim Laden per JavaScript mit Wert 0, min, max und size versehen und die Preise aus dem Array preise als Eurobeträge mit zweistelligen Cents in die Elemente der Klasse preis eintragen. Am HTML wird nichts verändert.</li>
+                                <li><a href="material/blatt11.pdf" class="blatt-link">Blatt 11</a>: Die Eingabefelder mit dem Ereignis change verknüpfen, Einzelpreise mit der jeweiligen Anzahl multiplizieren, aufsummieren und die Summe in das Element mit der ID gesamtpreis schreiben.</li>
+                                <li><a href="material/blatt12.pdf" class="blatt-link">Blatt 12</a>: Sicherung der Sprache: Variablen und Ausdrücke in der Konsole, Ausgabe über innerHTML statt console.log, Fallunterscheidung zur Besucherzahl, Schleifen für Fütterungszeiten und ein Array von Tierarten, eigene Funktionen für Futterbedarf und Eintrittspreis.</li>
+                                <li><a href="material/blatt13.pdf" class="blatt-link">Blatt 13</a>: Dark Mode: Klasse .nachtmodus im Stylesheet, Button mit der ID btn-nacht, über document.getElementById einen EventListener für click ergänzen und document.body.classList.toggle('nachtmodus') ausführen.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-02-04">
+                        <td>
+                            <strong>Lektion 8</strong><br>
+                            <small>Do 04.02. bis 18.02.2027<br>3 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Grundlagen von JavaScript</strong>
+                            Skripte einbinden und der Fall ohne JavaScript, Variablen, Konstanten und Funktionen, arithmetische und logische Ausdrücke, Fallunterscheidung und Schleifen.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 8</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt09.pdf" class="blatt-link">Blatt 9</a>: Erstes Skript mit script-Element, ausgelagerter js-Datei, noscript und den Rechenzeichen /, Prozent und Potenz. Variablen für ein Gehege mit Ausgabe über innerHTML, Schleifenübungen mit for und while (Quadratzahlen, Summe bis 100, jährliche Erweiterung). Zum Schluss die Fibonacci-Folge bis über 10000, als Liste auf der Seite, mit Anzahl der Zahlen, Quotienten benachbarter Glieder und einer Grenze in einer Variablen.</li>
                             </ul>
                         </td>
                     </tr>
 
-                    <!-- Woche 3 -->
-                    <tr class="week-row" data-start-date="2026-08-24">
-                        <td><strong>Woche 3</strong><br><small>24.08. - 28.08.</small></td>
+                    <tr class="unit-row" data-start-date="2026-11-05">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Thema 2</p>
+                                    <h2 class="unit-title">CSS</h2>
+                                    <p class="unit-meta">05.11.2026 - 28.01.2027 &middot; 10 Termine</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-01-14">
                         <td>
-                            <strong>Variablen und Datentypen</strong><br>
-                            Wie speichert ein Computer Daten? Wir lernen Strings (Text), Integer (Ganze Zahlen) und Floats (Kommazahlen) kennen.
+                            <strong>Lektion 7</strong><br>
+                            <small>Do 14.01. bis 28.01.2027<br>3 Termine</small>
                         </td>
                         <td>
-                            <a href="#" class="video-link">Variablen in Python</a><br>
+                            <strong>Schatten, Hintergrund, Responsive Design</strong>
+                            Schatten und Hintergrundgestaltung, weiche Übergänge, Medienabfragen für kleine Bildschirme.
                         </td>
-                        <td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 7</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
                             <ul class="task-list">
-                                <li>Arbeitsblatt: Fehlersuche im Code <a href="#" class="solution-link">Lösung</a></li>
-                                <li>Programmiere einen kleinen Taschenrechner für die Addition zweier Zahlen.</li>
+                                <li><a href="material/blatt08.pdf" class="blatt-link">Blatt 8</a>: Für alle Bilder transition und img:hover mit transform: scale(1.05) und box-shadow. Dazu Responsive Design: viewport-Angabe im head, Bilder auf max-width: 100 Prozent, Medienabfrage für Bildschirme bis 600 Pixel mit untereinander stehender Navigation und kleineren Abständen, Tabellen in einer scrollbaren Box.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-12-10">
+                        <td>
+                            <strong>Lektion 6</strong><br>
+                            <small>Do 10.12. bis 17.12.2026<br>2 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Boxen und Positionierung</strong>
+                            Das Boxmodell mit Innenabstand, Rahmen und Außenabstand, Elemente im Layout positionieren.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 6</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt07.pdf" class="blatt-link">Blatt 7</a>: Das Boxmodell im Werkzeugkasten untersuchen, die Abschnitte der Startseite als Kästen mit Rahmen und Abständen gestalten, den Inhalt auf feste Maximalbreite zentrieren, die Navigation in eine Zeile bringen und mit sticky, fixed sowie relative und absolute positionieren (Schild auf dem Lageplan).</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-26">
+                        <td>
+                            <strong>Lektion 5</strong><br>
+                            <small>Do 26.11. bis 03.12.2026<br>2 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Rahmen, Verweise, Listen und Tabellen</strong>
+                            Rahmen gestalten, Verweise und weitere Pseudo-Klassen, Gestaltung von Listen und Tabellen.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 5</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt06.pdf" class="blatt-link">Blatt 6</a>: Die Textfelder im Gästebuch über :invalid und :valid rötlich beziehungsweise grünlich hinterlegen, die Verweisliste ohne Anstriche und ohne Unterstreichung setzen, die Tabellen mit Rändern und gefärbten Einträgen gestalten.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-05">
+                        <td>
+                            <strong>Lektion 4</strong><br>
+                            <small>Do 05.11. bis 19.11.2026<br>3 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Farben, Schrift und Selektoren</strong>
+                            CSS einbinden und validieren, Farben und Schrift setzen, Text-Satz, Klassen und Bezeichner, Kombination von Selektoren.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 4</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt05.pdf" class="blatt-link">Blatt 5</a>: Alle Überschriften einfärben, das Impressum hellgrau hinterlegen (RGB in #-Notation) und serifenlos setzen, die Tierabsätze über einen Klassenselektor kursiv und die em-Auszeichnungen darin wieder aufrecht setzen.</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <tr class="unit-row" data-start-date="2026-08-13">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Thema 1</p>
+                                    <h2 class="unit-title">HTML</h2>
+                                    <p class="unit-meta">13.08.2026 - 29.10.2026 &middot; 10 Termine</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-10-01">
+                        <td>
+                            <strong>Lektion 3</strong><br>
+                            <small>Do 01.10. bis 29.10.2026<br>3 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Formulare</strong>
+                            Formularelemente, Pflichtfelder und Eingabetypen, Auswahl über Radiobuttons und Checkboxen, Absenden per post.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 3</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt04.pdf" class="blatt-link">Blatt 4</a>: gaestebuch.html mit dem vollständigen Formular: Pflichtfeld für den Namen, Drop-Down für das Land, fünfstellige Postleitzahl, Datumsfeld, Radiobuttons mit Vorauswahl, Mehrfachauswahl und ein Textfeld mit 400 Zeichen und Platzhaltertext. Dazu gb-schreiben.php als Platzhalterdatei.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-09-10">
+                        <td>
+                            <strong>Lektion 2</strong><br>
+                            <small>Do 10.09. bis 24.09.2026<br>3 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Listen, Tabellen, Bilder</strong>
+                            Höher- und Tieferstellung, geordnete und ungeordnete Listen, Tabellen, Bilder und Inline Frames.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 2</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt02.pdf" class="blatt-link">Blatt 2</a>: Die vier Verweise als ungeordnete Liste, Tabellen zu Öffnungszeiten und Eintrittspreisen (mit th im Kopf), dazu tiere.html mit verlinkten Tierbildern und einem Lageplan mit kreisförmigem, rechteckigem und polygonalem Bereich.</li>
+                                <li><a href="material/blatt03.pdf" class="blatt-link">Blatt 3</a>: Die Karte von Korbach bei OpenStreetMap suchen, den iframe-Schnipsel über Teilen holen und in die Startseite einbauen, Breite und Höhe anpassen.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-08-27">
+                        <td>
+                            <strong>Lektion 1</strong><br>
+                            <small>Do 27.08. bis 03.09.2026<br>2 Termine</small>
+                        </td>
+                        <td>
+                            <strong>Einstieg in HTML</strong>
+                            Aufbau des Webs und erste eigene Seite, Grundgerüst, Validierung, Überschriften, Abstände, Verweise, Hervorhebungen und Sonderzeichen.
+                        </td>
+                        <td data-label="Lektionstext">
+                            <a href="#" class="lesson-link">Lektion 1</a>
+                        </td>
+                        <td data-label="Aufgabenblätter">
+                            <ul class="task-list">
+                                <li><a href="material/blatt01.pdf" class="blatt-link">Blatt 1</a>: Startseite index.html für einen erfundenen Zoo mit Hauptüberschrift, Impressum, vier Verweisen und den Abschnitten Geschichte und Neuigkeiten. Dazu Ordnerstruktur und Grundgerüst der drei Unterseiten, Prüfung im Validator samt absichtlich eingebauten Fehlern, Überschriftenebenen und Umgang mit Leerraum, Sonderzeichen und Zeichenreferenzen sowie Verweise auf externe Seiten, per mailto und auf Sprungmarken.</li>
                             </ul>
                         </td>
                     </tr>
@@ -361,76 +693,78 @@ a:focus-visible {
         <small>Diese Seite dient ausschließlich schulischen Zwecken.</small>
     </footer>
 
-    <!-- JavaScript für die automatische Freischaltung & geheimen Testmodus -->
+    <!-- JavaScript für die automatische Freischaltung und den geheimen Testmodus -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const rows = document.querySelectorAll('.week-row');
+            const rows = document.querySelectorAll('.week-row, .unit-row');
+            const weekRows = document.querySelectorAll('.week-row');
             const emptyState = document.getElementById('empty-state');
             const secretButton = document.querySelector('header h1'); // Die Überschrift als geheimer Schalter
-            
+
             let isTestMode = false;
             let clickCount = 0;
             let clickTimer;
 
-            // Funktion, die die Sichtbarkeit basierend auf Datum und Testmodus regelt
+            // Sichtbarkeit nach Datum und Testmodus regeln
             function updateVisibility() {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                
-                let visibleCount = 0;
+
+                let visibleWeeks = 0;
 
                 rows.forEach(row => {
                     const dateString = row.getAttribute('data-start-date');
-                    
-                    if (dateString) {
-                        const startDate = new Date(dateString);
-                        startDate.setHours(0, 0, 0, 0);
+                    if (!dateString) return;
 
-                        // Zeile anzeigen, wenn Testmodus AKTIV ist ODER das Datum erreicht wurde
-                        if (isTestMode || today >= startDate) {
-                            row.style.display = 'table-row';
-                            visibleCount++;
-                        } else {
-                            // Andernfalls wieder verstecken
-                            row.style.display = 'none';
-                        }
+                    const startDate = new Date(dateString);
+                    startDate.setHours(0, 0, 0, 0);
+
+                    const show = isTestMode || today >= startDate;
+                    row.classList.toggle('is-visible', show);
+                    if (show && row.classList.contains('week-row')) visibleWeeks++;
+                });
+
+                // Laufende Woche markieren: die neueste sichtbare Woche
+                let current = null;
+                weekRows.forEach(row => {
+                    row.classList.remove('current');
+                    const dateString = row.getAttribute('data-start-date');
+                    if (!dateString) return;
+                    const startDate = new Date(dateString);
+                    startDate.setHours(0, 0, 0, 0);
+                    if (today >= startDate && (!current || startDate > current.date)) {
+                        current = { row: row, date: startDate };
                     }
                 });
+                if (current) current.row.classList.add('current');
 
                 // Platzhaltertext ein- oder ausblenden
                 if (emptyState) {
-                    emptyState.style.display = visibleCount > 0 ? 'none' : 'table-row';
+                    emptyState.style.display = visibleWeeks > 0 ? 'none' : '';
                 }
             }
 
             // Der "Easter Egg"-Klick-Zähler
             if (secretButton) {
-                // Den Mauszeiger nicht verändern, damit es geheim bleibt!
-                secretButton.style.cursor = "default"; 
-                // Verhindert, dass der Text beim schnellen Klicken markiert wird
-                secretButton.style.userSelect = "none"; 
+                secretButton.style.cursor = "default";
+                secretButton.style.userSelect = "none";
 
                 secretButton.addEventListener('click', function() {
                     clickCount++;
-                    
-                    // Den Timer zurücksetzen
                     clearTimeout(clickTimer);
-                    
-                    // Wenn 3 Mal geklickt wurde
+
                     if (clickCount >= 3) {
-                        isTestMode = !isTestMode; // Modus umschalten (an/aus)
-                        updateVisibility();       // Tabelle sofort aktualisieren
-                        clickCount = 0;           // Zähler wieder auf 0 setzen
+                        isTestMode = !isTestMode;
+                        updateVisibility();
+                        clickCount = 0;
                     }
 
-                    // Zähler automatisch auf 0 setzen, wenn 1,5 Sekunden lang nicht geklickt wird
                     clickTimer = setTimeout(() => {
                         clickCount = 0;
                     }, 1500);
                 });
             }
 
-            // Beim ersten Laden der Seite einmal ausführen
             updateVisibility();
         });
     </script>
