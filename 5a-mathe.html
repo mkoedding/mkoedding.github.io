@@ -14,6 +14,7 @@
     --text-color: #2f3640;
     --text-muted: #6b7684;
     --table-border: #e3e8ee;
+    --unit-bg: #eaf1f8;
     --video-color: #d64541;
     --solution-color: #1e8449;
     --radius: 8px;
@@ -64,10 +65,10 @@ header p   { margin: 0.4rem 0 0; opacity: 0.75; font-size: 0.95rem; }
 table { width: 100%; border-collapse: collapse; text-align: left; }
 
 /* Spaltenbreiten: Woche schmal, Thema und Aufgaben breit */
-th:nth-child(1), td:nth-child(1) { width: 12%; }
-th:nth-child(2), td:nth-child(2) { width: 32%; }
-th:nth-child(3), td:nth-child(3) { width: 16%; }
-th:nth-child(4), td:nth-child(4) { width: 40%; }
+th:nth-child(1), td:nth-child(1) { width: 14%; }
+th:nth-child(2), td:nth-child(2) { width: 38%; }
+th:nth-child(3), td:nth-child(3) { width: 24%; }
+th:nth-child(4), td:nth-child(4) { width: 24%; }
 
 th, td {
     padding: 0.9rem 1.1rem;
@@ -100,8 +101,55 @@ td:nth-child(2) strong { display: block; margin-bottom: 0.25rem; font-size: 1rem
 td:nth-child(2)        { color: var(--text-muted); }
 td:nth-child(2) strong { color: var(--text-color); }
 
-/* Zeilen sind bis zum Stichtag ausgeblendet, das JS setzt sie sichtbar */
-.week-row { display: none; }
+/* Zeilen sind bis zum Stichtag ausgeblendet, das JS blendet sie ein */
+.week-row, .unit-row { display: none; }
+.week-row.is-visible, .unit-row.is-visible { display: table-row; }
+
+/* Einheiten-Block: gilt fuer alle Wochen darunter */
+.unit-row > td {
+    background-color: var(--unit-bg);
+    border-left: 4px solid var(--accent-color);
+    border-bottom: 1px solid #d7dee6;
+    padding: 1.1rem 1.1rem;
+    width: auto;
+}
+
+.unit-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+}
+
+.unit-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+}
+
+.unit-title {
+    margin: 0.1rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.unit-meta {
+    margin: 0.15rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.unit-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+}
 
 /* Laufende Woche hervorheben */
 .week-row.current { background-color: #eaf4fd; box-shadow: inset 3px 0 0 var(--accent-color); }
@@ -135,15 +183,8 @@ td:nth-child(2) strong { color: var(--text-color); }
 .video-link:hover { background-color: #b03a37; }
 .video-link::before { content: "▶"; margin-right: 6px; font-size: 0.75rem; }
 
-/* Wochenplan und Lösungen */
-.material-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 0.85rem;
-}
-
-.plan-link, .material-links .solution-link {
+/* Wochenplaene, Material und Loesungen */
+.plan-link, .extra-link, .solution-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -163,14 +204,30 @@ td:nth-child(2) strong { color: var(--text-color); }
 .plan-link:hover { background-color: var(--accent-dark); border-color: var(--accent-dark); }
 .plan-link::before { content: "📄"; font-size: 0.9rem; }
 
-.material-links .solution-link {
+.extra-link {
+    background-color: transparent;
+    color: var(--accent-dark);
+    border: 1px solid var(--accent-color);
+}
+.extra-link:hover { background-color: var(--accent-color); color: white; }
+.extra-link::before { content: "📁"; font-size: 0.9rem; }
+
+.solution-link {
     background-color: transparent;
     color: var(--solution-color);
     border: 1px solid var(--solution-color);
-    margin-left: 0;
 }
-.material-links .solution-link:hover { background-color: var(--solution-color); color: white; }
-.material-links .solution-link::before { content: "✓"; font-weight: 700; }
+.solution-link:hover { background-color: var(--solution-color); color: white; }
+.solution-link::before { content: "✓"; font-weight: 700; }
+
+/* Einzeldokument in einer Woche, etwa der Selbsteinschätzungsbogen */
+.week-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 0.6rem;
+}
+.week-links .plan-link { font-size: 0.84rem; padding: 0.3rem 0.65rem; }
 
 /* Aufgabenliste */
 ul.task-list { list-style-type: none; padding: 0; margin: 0; }
@@ -193,19 +250,6 @@ ul.task-list li::before {
     border-radius: 50%;
     background-color: var(--accent-color);
 }
-
-/* Lösungslink an einer einzelnen Aufgabe */
-ul.task-list .solution-link {
-    font-size: 0.8rem;
-    color: var(--solution-color);
-    text-decoration: none;
-    margin-left: 6px;
-    border: 1px solid var(--solution-color);
-    padding: 0 5px;
-    border-radius: 3px;
-    white-space: nowrap;
-}
-ul.task-list .solution-link:hover { background-color: var(--solution-color); color: white; }
 
 /* Leerzustand */
 #empty-state td { color: var(--text-muted); }
@@ -233,6 +277,8 @@ a:focus-visible {
     table, tbody, tr, td { display: block; width: 100%; }
     thead { display: none; }
 
+    .week-row.is-visible, .unit-row.is-visible { display: block; }
+
     tr.week-row {
         background-color: var(--card-bg);
         border-radius: var(--radius);
@@ -242,6 +288,15 @@ a:focus-visible {
     }
     tr.week-row:hover { background-color: var(--card-bg); }
     tr.week-row.current { box-shadow: inset 3px 0 0 var(--accent-color), 0 1px 3px rgba(16,24,40,0.08); }
+
+    tr.unit-row { margin: 1.5rem 0 1rem; }
+    tr.unit-row:first-child { margin-top: 0; }
+    .unit-row > td {
+        border-radius: var(--radius);
+        border-bottom: none;
+        box-shadow: 0 1px 3px rgba(16,24,40,0.08);
+    }
+    .unit-head { align-items: flex-start; }
 
     th:nth-child(n), td:nth-child(n) { width: auto; }
 
@@ -278,1069 +333,789 @@ a:focus-visible {
 
     <div class="container">
         <a href="index.html" class="back-link">← Zurück zur Übersicht</a>
-        
+
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th width="15%">Zeitraum / Woche</th>
-                        <th width="30%">Inhalte im Unterricht</th>
-                        <th width="25%">Erklärvideos</th>
-                        <th width="30%">Aufgaben & Materialien</th>
+                        <th>Zeitraum / Woche</th>
+                        <th>Inhalte im Unterricht</th>
+                        <th>Erklärvideos</th>
+                        <th>Aufgaben</th>
                     </tr>
                 </thead>
-<!-- BEGINN -->
-<!-- Tabellenkoerper der Wochenuebersicht -->
-<tbody id="table-body">
-    <tr id="empty-state">
-        <td colspan="4" style="text-align: center; padding: 3rem; color: #7f8c8d;">
-            <em>Aktuell sind noch keine Unterrichtsinhalte freigeschaltet.</em>
-        </td>
-    </tr>
+                <!-- Tabellenkoerper: pro Einheit ein Block, darunter die Wochen -->
+                <tbody id="table-body">
+                    <tr id="empty-state">
+                        <td colspan="4" style="text-align: center; padding: 3rem; color: #7f8c8d;">
+                            <em>Aktuell sind noch keine Unterrichtsinhalte freigeschaltet.</em>
+                        </td>
+                    </tr>
 
-    
-    <tr class="week-row" data-start-date="2027-06-21">
-        <td><strong>Woche 40</strong><br><small>21.06. - 25.06.</small></td>
-        <td>
-            <strong>Puffer & Jahresabschluss</strong><br>
-            Wir vermessen Verpackungen, wiederholen in einer Knobelrunde und schließen das Schuljahr ab.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-40-puffer.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-40.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                    <tr class="unit-row" data-start-date="2027-05-10">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Einheit 6</p>
+                                    <h2 class="unit-title">Körper und Volumen</h2>
+                                    <p class="unit-meta">10.05.2027 - 25.06.2027</p>
+                                </div>
+                                <p class="unit-links">
+                                <a href="material/wp-5-e6-koerper-volumen.pdf" class="plan-link">Wochenpläne Einheit 6</a>
+                                <a href="material/erg-5-e6.pdf" class="solution-link">Lösungen Einheit 6</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-06-21">
+                        <td>
+                            <strong>Woche 40</strong><br>
+                            <small>21.06. - 25.06.</small>
+                        </td>
+                        <td>
+                            <strong>Puffer und Jahresabschluss</strong>
+                            Wir vermessen Verpackungen, wiederholen in einer Knobelrunde und schließen das Schuljahr ab.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-06-14">
-        <td><strong>Woche 39</strong><br><small>14.06. - 18.06.</small></td>
-        <td>
-            <strong>Anwenden und Vertiefen: Volumina</strong><br>
-            Wir zerlegen zusammengesetzte Körper in Quader und berechnen ihr Volumen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-39-quader-anwenden.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-39.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-06-07">
-        <td><strong>Woche 38</strong><br><small>07.06. - 11.06.</small></td>
-        <td>
-            <strong>Berechnungen am Quader</strong><br>
-            Wir berechnen Volumen und Oberflächeninhalt eines Quaders.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-38-quader-berechnen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-38.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-06-14">
+                        <td>
+                            <strong>Woche 39</strong><br>
+                            <small>14.06. - 18.06.</small>
+                        </td>
+                        <td>
+                            <strong>Anwenden und Vertiefen: Volumina</strong>
+                            Wir zerlegen zusammengesetzte Körper in Quader und berechnen ihr Volumen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-05-31">
-        <td><strong>Woche 37</strong><br><small>31.05. - 04.06.</small></td>
-        <td>
-            <strong>Volumeneinheiten & dezimale Schreibweise</strong><br>
-            Wir rechnen Volumeneinheiten um und schreiben Volumina mit Komma.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-37-volumeneinheiten.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-37.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-05-24">
-        <td><strong>Woche 36 (Verkürzt)</strong><br><small>24.05. - 26.05.</small></td>
-        <td>
-            <strong>Rauminhalt & Volumeneinheiten</strong><br>
-            Definition des Rauminhalts und erste Volumeneinheiten.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-36-rauminhalt.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-36.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-06-07">
+                        <td>
+                            <strong>Woche 38</strong><br>
+                            <small>07.06. - 11.06.</small>
+                        </td>
+                        <td>
+                            <strong>Berechnungen am Quader</strong>
+                            Wir berechnen Volumen und Oberflächeninhalt eines Quaders.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-05-17">
-        <td><strong>Woche 35 (Verkürzt)</strong><br><small>18.05. - 21.05.</small></td>
-        <td>
-            <strong>Netze, Schrägbilder</strong><br>
-            Wir zeichnen Körpernetze und lernen, Schrägbilder zu erstellen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-35-netze-schraegbilder.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-35.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-05-10">
-        <td><strong>Woche 34</strong><br><small>10.05. - 14.05.</small></td>
-        <td>
-            <strong>Ecken, Kanten, Flächen</strong><br>
-            Eigenschaften von geometrischen Körpern untersuchen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-34-koerper.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-34.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-05-31">
+                        <td>
+                            <strong>Woche 37</strong><br>
+                            <small>31.05. - 04.06.</small>
+                        </td>
+                        <td>
+                            <strong>Volumeneinheiten und dezimale Schreibweise</strong>
+                            Wir rechnen Volumeneinheiten um und schreiben Volumina mit Komma.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-05-03">
-        <td><strong>Woche 33 (Verkürzt)</strong><br><small>03.05. - 05.05.</small></td>
-        <td>
-            <strong>Klassenarbeit</strong><br>
-            Wiederholung mit Selbsteinschätzungsbogen und Schreiben der Klassenarbeit.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/se33-wiederholung.pdf" class="plan-link">Wochenplan</a>
-                
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-            <ul class="task-list">
-                
-                <li>
-                    Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben
-                    
-                </li>
-                
-            </ul>
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-04-26">
-        <td><strong>Woche 32</strong><br><small>26.04. - 30.04.</small></td>
-        <td>
-            <strong>Sachaufgaben zum Flächeninhalt</strong><br>
-            Anwendung der Flächenberechnung in komplexeren Sachaufgaben.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-32-flaechen-sachaufgaben.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-32.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-05-24">
+                        <td>
+                            <strong>Woche 36 (Verkürzt)</strong><br>
+                            <small>24.05. - 26.05.</small>
+                        </td>
+                        <td>
+                            <strong>Rauminhalt und Volumeneinheiten</strong>
+                            Definition des Rauminhalts und erste Volumeneinheiten.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-04-19">
-        <td><strong>Woche 31</strong><br><small>19.04. - 23.04.</small></td>
-        <td>
-            <strong>Berechnungen am Rechteck</strong><br>
-            Wir berechnen Flächeninhalt und Umfang von Rechteck und Quadrat.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-31-rechteck-berechnen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-31.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-04-12">
-        <td><strong>Woche 30</strong><br><small>12.04. - 16.04.</small></td>
-        <td>
-            <strong>Flächeneinheiten & Dezimale Schreibweise</strong><br>
-            Umwandlung von Flächeneinheiten unter Verwendung von Kommazahlen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-30-dezimale-schreibweise.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-30.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-05-17">
+                        <td>
+                            <strong>Woche 35 (Verkürzt)</strong><br>
+                            <small>18.05. - 21.05.</small>
+                        </td>
+                        <td>
+                            <strong>Netze und Schrägbilder</strong>
+                            Wir zeichnen Körpernetze und lernen, Schrägbilder zu erstellen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-04-05">
-        <td><strong>Woche 29</strong><br><small>05.04. - 09.04.</small></td>
-        <td>
-            <strong>Flächeninhalt & Flächeneinheiten</strong><br>
-            Wir berechnen den Flächeninhalt und lernen die zugehörigen Einheiten kennen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-29-flaecheneinheiten.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-29.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-03-15">
-        <td><strong>Woche 28</strong><br><small>15.03. - 19.03.</small></td>
-        <td>
-            <strong>Flächeninhalt</strong><br>
-            Einführung in den Begriff des Flächeninhalts.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-28-flaecheninhalt.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-28.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-05-10">
+                        <td>
+                            <strong>Woche 34</strong><br>
+                            <small>10.05. - 14.05.</small>
+                        </td>
+                        <td>
+                            <strong>Ecken, Kanten, Flächen</strong>
+                            Eigenschaften von geometrischen Körpern untersuchen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-03-08">
-        <td><strong>Woche 27</strong><br><small>08.03. - 12.03.</small></td>
-        <td>
-            <strong>Klassenarbeit</strong><br>
-            Wiederholung mit Selbsteinschätzungsbogen und Schreiben der Klassenarbeit.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/se27-wiederholung.pdf" class="plan-link">Wochenplan</a>
-                
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-            <ul class="task-list">
-                
-                <li>
-                    Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben
-                    
-                </li>
-                
-            </ul>
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-03-01">
-        <td><strong>Woche 26</strong><br><small>01.03. - 05.03.</small></td>
-        <td>
-            <strong>Wiederholung</strong><br>
-            Wir wiederholen die geometrischen Themen als Vorbereitung auf die Klassenarbeit.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-26-wiederholung-geometrie.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-26.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-02-22">
-        <td><strong>Woche 25</strong><br><small>22.02. - 26.02.</small></td>
-        <td>
-            <strong>Kreis, Rechteck, Quadrat</strong><br>
-            Wir arbeiten mit dem Zirkel und betrachten spezielle Vierecke und ihre Umfänge.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-25-kreis-rechteck.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-25.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                    <tr class="unit-row" data-start-date="2027-03-15">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Einheit 5</p>
+                                    <h2 class="unit-title">Flächeninhalt</h2>
+                                    <p class="unit-meta">15.03.2027 - 05.05.2027</p>
+                                </div>
+                                <p class="unit-links">
+                                <a href="material/wp-5-e5-flaecheninhalt.pdf" class="plan-link">Wochenpläne Einheit 5</a>
+                                <a href="material/erg-5-e5.pdf" class="solution-link">Lösungen Einheit 5</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-05-03">
+                        <td>
+                            <strong>Woche 33 (Verkürzt)</strong><br>
+                            <small>03.05. - 05.05.</small>
+                        </td>
+                        <td>
+                            <strong>Klassenarbeit</strong>
+                            Wiederholung mit Selbsteinschätzungsbogen und Schreiben der Klassenarbeit.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-02-15">
-        <td><strong>Woche 24</strong><br><small>15.02. - 19.02.</small></td>
-        <td>
-            <strong>Winkel</strong><br>
-            Wir messen und zeichnen Winkel mit dem Geodreieck und lernen die Winkelarten kennen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-24-winkel.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-24.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
+                            <p class="week-links">
+                                <a href="material/se33-wiederholung.pdf" class="plan-link">Selbsteinschätzungsbogen</a>
+                            </p>
+                            <ul class="task-list">
+                                <li>Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-04-26">
+                        <td>
+                            <strong>Woche 32</strong><br>
+                            <small>26.04. - 30.04.</small>
+                        </td>
+                        <td>
+                            <strong>Sachaufgaben zum Flächeninhalt</strong>
+                            Anwendung der Flächenberechnung in komplexeren Sachaufgaben.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-02-08">
-        <td><strong>Woche 23</strong><br><small>08.02. - 12.02.</small></td>
-        <td>
-            <strong>Senkrecht, Abstand, Parallel</strong><br>
-            Grundlegende geometrische Beziehungen zwischen Geraden zeichnen und überprüfen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-23-senkrecht-parallel.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-23.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-02-01">
-        <td><strong>Woche 22 (Verkürzt)</strong><br><small>03.02. - 05.02.</small></td>
-        <td>
-            <strong>Geometrie: Punktmengen</strong><br>
-            Einführung in die Geometrie und das Arbeiten mit Punktmengen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-22-punktmengen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-22.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-04-19">
+                        <td>
+                            <strong>Woche 31</strong><br>
+                            <small>19.04. - 23.04.</small>
+                        </td>
+                        <td>
+                            <strong>Berechnungen am Rechteck</strong>
+                            Wir berechnen Flächeninhalt und Umfang von Rechteck und Quadrat.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-01-25">
-        <td><strong>Woche 21</strong><br><small>25.01. - 29.01.</small></td>
-        <td>
-            <strong>Grundlagen der Gleichungslehre</strong><br>
-            Erste Schritte im Umgang mit Variablen und einfachen Gleichungen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-21-gleichungen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-21.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-01-18">
-        <td><strong>Woche 20</strong><br><small>18.01. - 22.01.</small></td>
-        <td>
-            <strong>Distributivgesetz, Termumformungen, Division</strong><br>
-            Anwenden des Distributivgesetzes und vermischte Übungen zur Termumformung.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-20-distributivgesetz.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-20.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-04-12">
+                        <td>
+                            <strong>Woche 30</strong><br>
+                            <small>12.04. - 16.04.</small>
+                        </td>
+                        <td>
+                            <strong>Flächeneinheiten und dezimale Schreibweise</strong>
+                            Umwandlung von Flächeneinheiten unter Verwendung von Kommazahlen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2027-01-11">
-        <td><strong>Woche 19 (Verkürzt)</strong><br><small>13.01. - 15.01.</small></td>
-        <td>
-            <strong>Mehrgliedrige Produkte, Punkt- vor Strichrechnung</strong><br>
-            Wir festigen die Vorrangregeln beim Rechnen mit komplexeren Termen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-19-punkt-vor-strich.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-19.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-12-21">
-        <td><strong>Woche 18 (Verkürzt)</strong><br><small>21.12. - 22.12.</small></td>
-        <td>
-            <strong>Klammern, Umstellungsregel, Terme</strong><br>
-            Rechnen mit Klammern und erste Termaufstellungen vor den Ferien.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-18-terme.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-18.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-04-05">
+                        <td>
+                            <strong>Woche 29</strong><br>
+                            <small>05.04. - 09.04.</small>
+                        </td>
+                        <td>
+                            <strong>Flächeninhalt und Flächeneinheiten</strong>
+                            Wir berechnen den Flächeninhalt und lernen die zugehörigen Einheiten kennen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-12-14">
-        <td><strong>Woche 17</strong><br><small>14.12. - 18.12.</small></td>
-        <td>
-            <strong>Rechengesetze: Kommutation, Mehrgliedrige Summen/Differenzen</strong><br>
-            Wir lernen das Vertauschungsgesetz und rechnen mit längeren Summen und Differenzen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-17-rechengesetze.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-17.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-12-07">
-        <td><strong>Woche 16</strong><br><small>07.12. - 11.12.</small></td>
-        <td>
-            <strong>Klassenarbeit</strong><br>
-            Wiederholung mit Selbsteinschätzungsbogen und Schreiben der Klassenarbeit.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/se16-wiederholung.pdf" class="plan-link">Wochenplan</a>
-                
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-03-15">
+                        <td>
+                            <strong>Woche 28</strong><br>
+                            <small>15.03. - 19.03.</small>
+                        </td>
+                        <td>
+                            <strong>Flächeninhalt</strong>
+                            Einführung in den Begriff des Flächeninhalts.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-            <ul class="task-list">
-                
-                <li>
-                    Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben
-                    
-                </li>
-                
-            </ul>
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-11-30">
-        <td><strong>Woche 15</strong><br><small>30.11. - 04.12.</small></td>
-        <td>
-            <strong>Gemischtes (Lerntheke)</strong><br>
-            Stationenarbeit zur Festigung und Wiederholung der bisherigen Themen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-15-lerntheke.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-15.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-11-23">
-        <td><strong>Woche 14</strong><br><small>23.11. - 27.11.</small></td>
-        <td>
-            <strong>Zeit</strong><br>
-            Umgang mit Uhrzeiten, Zeitspannen und Umrechnungen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-14-zeit.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-14.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-11-16">
-        <td><strong>Woche 13</strong><br><small>16.11. - 20.11.</small></td>
-        <td>
-            <strong>Sachaufgaben</strong><br>
-            Mathematik im Alltag: Bearbeiten von Textaufgaben mit Größen.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-13-sachaufgaben.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-13.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                    <tr class="unit-row" data-start-date="2027-02-01">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Einheit 4</p>
+                                    <h2 class="unit-title">Geometrische Grundbegriffe</h2>
+                                    <p class="unit-meta">03.02.2027 - 12.03.2027</p>
+                                </div>
+                                <p class="unit-links">
+                                <a href="material/wp-5-e4-geometrie.pdf" class="plan-link">Wochenpläne Einheit 4</a>
+                                <a href="material/erg-5-e4.pdf" class="solution-link">Lösungen Einheit 4</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-03-08">
+                        <td>
+                            <strong>Woche 27</strong><br>
+                            <small>08.03. - 12.03.</small>
+                        </td>
+                        <td>
+                            <strong>Klassenarbeit</strong>
+                            Wiederholung mit Selbsteinschätzungsbogen und Schreiben der Klassenarbeit.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-11-09">
-        <td><strong>Woche 12</strong><br><small>09.11. - 13.11.</small></td>
-        <td>
-            <strong>Währung</strong><br>
-            Rechnen mit Euro und Cent.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-12-waehrung.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-12.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
+                            <p class="week-links">
+                                <a href="material/se27-wiederholung.pdf" class="plan-link">Selbsteinschätzungsbogen</a>
+                            </p>
+                            <ul class="task-list">
+                                <li>Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-03-01">
+                        <td>
+                            <strong>Woche 26</strong><br>
+                            <small>01.03. - 05.03.</small>
+                        </td>
+                        <td>
+                            <strong>Wiederholung</strong>
+                            Wir wiederholen die geometrischen Themen als Vorbereitung auf die Klassenarbeit.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-11-02">
-        <td><strong>Woche 11</strong><br><small>02.11. - 06.11.</small></td>
-        <td>
-            <strong>Rechnen mit Größen</strong><br>
-            Wir addieren und subtrahieren verschiedene Maßeinheiten und rechnen mit dem Maßstab.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-11-groessen-rechnen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-11.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-10-26">
-        <td><strong>Woche 10</strong><br><small>26.10. - 30.10.</small></td>
-        <td>
-            <strong>Masse</strong><br>
-            Umrechnung von Gewichten (t, kg, g, mg).
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-10-masse.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-10.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-02-22">
+                        <td>
+                            <strong>Woche 25</strong><br>
+                            <small>22.02. - 26.02.</small>
+                        </td>
+                        <td>
+                            <strong>Kreis, Rechteck, Quadrat</strong>
+                            Wir arbeiten mit dem Zirkel und betrachten spezielle Vierecke und ihre Umfänge.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-10-19">
-        <td><strong>Woche 9</strong><br><small>19.10. - 23.10.</small></td>
-        <td>
-            <strong>Längen</strong><br>
-            Umrechnung und Umgang mit Längeneinheiten.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-09-laengen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-09.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-09-28">
-        <td><strong>Woche 8</strong><br><small>28.09. - 02.10.</small></td>
-        <td>
-            <strong>Klassenarbeit & Rückgabe</strong><br>
-            Wiederholung mit Selbsteinschätzungsbogen, Schreiben der Klassenarbeit und Rückgabe.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/se08-wiederholung.pdf" class="plan-link">Wochenplan</a>
-                
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-02-15">
+                        <td>
+                            <strong>Woche 24</strong><br>
+                            <small>15.02. - 19.02.</small>
+                        </td>
+                        <td>
+                            <strong>Winkel</strong>
+                            Wir messen und zeichnen Winkel mit dem Geodreieck und lernen die Winkelarten kennen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-            <ul class="task-list">
-                
-                <li>
-                    Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben
-                    
-                </li>
-                
-            </ul>
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-09-21">
-        <td><strong>Woche 7</strong><br><small>21.09. - 25.09.</small></td>
-        <td>
-            <strong>Daten erheben und darstellen</strong><br>
-            Wir lernen, wie man Informationen sammelt und übersichtlich grafisch darstellt.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-07-daten.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-07.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-09-14">
-        <td><strong>Woche 6</strong><br><small>14.09. - 18.09.</small></td>
-        <td>
-            <strong>Zahlensysteme</strong><br>
-            Wir lernen das Binärsystem und die römische Zahldarstellung kennen.
-        </td>
-        <td>
-            
-            <a href="#" class="video-link">Binärsystem</a><br>
-            
-            <a href="#" class="video-link">Römische Zahldarstellung</a><br>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-06-zahlensysteme.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-06.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-02-08">
+                        <td>
+                            <strong>Woche 23</strong><br>
+                            <small>08.02. - 12.02.</small>
+                        </td>
+                        <td>
+                            <strong>Senkrecht, Abstand, Parallel</strong>
+                            Grundlegende geometrische Beziehungen zwischen Geraden zeichnen und überprüfen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-09-07">
-        <td><strong>Woche 5</strong><br><small>07.09. - 11.09.</small></td>
-        <td>
-            <strong>Potenzen und Potenzdarstellung</strong><br>
-            Wir führen die Potenz als wiederholte Multiplikation ein.
-        </td>
-        <td>
-            
-            <a href="#" class="video-link">Potenzen</a><br>
-            
-            <a href="#" class="video-link">Dezimalsystem mit Potenzdarstellung</a><br>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-05-potenzen.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-05.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-08-31">
-        <td><strong>Woche 4</strong><br><small>31.08. - 04.09.</small></td>
-        <td>
-            <strong>Multiplizieren und Dividieren</strong><br>
-            Wir wiederholen die Multiplikation und Division aus der Grundschule und erweitern sie um neue Fachbegriffe.
-        </td>
-        <td>
-            
-            <a href="#" class="video-link">Multiplizieren und Dividieren</a><br>
-            
-            <a href="#" class="video-link">Schriftliches Multiplizieren</a><br>
-            
-            <a href="#" class="video-link">Schriftliches Dividieren</a><br>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-04-mult-div.pdf" class="plan-link">Wochenplan</a>
-                
-                
-                <a href="material/erg-5-04.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-02-01">
+                        <td>
+                            <strong>Woche 22 (Verkürzt)</strong><br>
+                            <small>03.02. - 05.02.</small>
+                        </td>
+                        <td>
+                            <strong>Geometrie: Punktmengen</strong>
+                            Einführung in die Geometrie und das Arbeiten mit Punktmengen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-08-24">
-        <td><strong>Woche 3</strong><br><small>24.08. - 28.08.</small></td>
-        <td>
-            <strong>Addieren und Subtrahieren</strong><br>
-            Wir wiederholen die Addition und Subtraktion aus der Grundschule und erweitern sie um neue Fachbegriffe.
-        </td>
-        <td>
-            
-            <a href="#" class="video-link">Addieren und Subtrahieren</a><br>
-            <a href="#" class="video-link">Runden und Überschlagen</a><br>
-            <a href="#" class="video-link">Schriftliches Addieren</a><br>
-            <a href="#" class="video-link">Schriftliches Subtrahieren</a><br>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-03-add-sub.pdf" class="plan-link">Wochenplan</a>
-                <a href="material/erg-5-03.pdf" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                        <td data-label="Aufgaben">
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-08-17">
-        <td><strong>Woche 2</strong><br><small>17.08. - 21.08.</small></td>
-        <td>
-            <strong>Zahlenmengen und natürliche Zahlen</strong><br>
-            Wir lernen den Begriff der Menge kennen und finden erste Eigenschaften der natürlichen Zahlen.
-        </td>
-        <td>
-            
-            <a href="https://youtu.be/qa2eFzx7mNo" class="video-link">Zahlenmengen</a><br>
-            <a href="https://youtu.be/_2OzzaIGCV0" class="video-link">Anordnen und vergleichen</a><br>
-            
-        </td>
-        <td>
-            
-            <p class="material-links">
-                
-                <a href="material/wp-5-02-nat-zahlen.pdf" class="plan-link">Wochenplan</a>
-                <a href="https://cloud.matheinfo.schule/s/985oQGnRdDmWDzM" class="plan-link">Material</a>
-                <a href="https://cloud.matheinfo.schule/s/MiQ3gnYWWaMHXRd" class="solution-link">Lösungen</a>
-                
-            </p>
-            
+                        </td>
+                    </tr>
 
-            
-        </td>
-    </tr>
-    
-    <tr class="week-row" data-start-date="2026-08-10">
-        <td><strong>Woche 1</strong><br><small>10.08. - 14.08.</small></td>
-        <td>
-            <strong>Wiederholung und Diagnose</strong><br>
-            Wir wiederholen die Inhalte aus der Grundschule, um auf dem selben Stand zu starten.
-        </td>
-        <td>
-            
-        </td>
-        <td>
-            
+                    <tr class="unit-row" data-start-date="2026-12-14">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Einheit 3</p>
+                                    <h2 class="unit-title">Rechengesetze und Terme</h2>
+                                    <p class="unit-meta">14.12.2026 - 29.01.2027</p>
+                                </div>
+                                <p class="unit-links">
+                                <a href="material/wp-5-e3-terme.pdf" class="plan-link">Wochenpläne Einheit 3</a>
+                                <a href="material/erg-5-e3.pdf" class="solution-link">Lösungen Einheit 3</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-01-25">
+                        <td>
+                            <strong>Woche 21</strong><br>
+                            <small>25.01. - 29.01.</small>
+                        </td>
+                        <td>
+                            <strong>Grundlagen der Gleichungslehre</strong>
+                            Erste Schritte im Umgang mit Variablen und einfachen Gleichungen.
+                        </td>
+                        <td data-label="Erklärvideos">
 
-            
-        </td>
-    </tr>
-    
-</tbody>
+                        </td>
+                        <td data-label="Aufgaben">
 
-<!-- ENDE -->
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-01-18">
+                        <td>
+                            <strong>Woche 20</strong><br>
+                            <small>18.01. - 22.01.</small>
+                        </td>
+                        <td>
+                            <strong>Distributivgesetz, Termumformungen, Division</strong>
+                            Anwenden des Distributivgesetzes und vermischte Übungen zur Termumformung.
+                        </td>
+                        <td data-label="Erklärvideos">
 
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2027-01-11">
+                        <td>
+                            <strong>Woche 19 (Verkürzt)</strong><br>
+                            <small>13.01. - 15.01.</small>
+                        </td>
+                        <td>
+                            <strong>Mehrgliedrige Produkte, Punkt- vor Strichrechnung</strong>
+                            Wir festigen die Vorrangregeln beim Rechnen mit komplexeren Termen.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-12-21">
+                        <td>
+                            <strong>Woche 18 (Verkürzt)</strong><br>
+                            <small>21.12. - 22.12.</small>
+                        </td>
+                        <td>
+                            <strong>Klammern, Umstellungsregel, Terme</strong>
+                            Rechnen mit Klammern und erste Termaufstellungen vor den Ferien.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-12-14">
+                        <td>
+                            <strong>Woche 17</strong><br>
+                            <small>14.12. - 18.12.</small>
+                        </td>
+                        <td>
+                            <strong>Rechengesetze: Kommutation, mehrgliedrige Summen und Differenzen</strong>
+                            Wir lernen das Vertauschungsgesetz und rechnen mit längeren Summen und Differenzen.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+
+                    <tr class="unit-row" data-start-date="2026-10-19">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Einheit 2</p>
+                                    <h2 class="unit-title">Größen</h2>
+                                    <p class="unit-meta">19.10.2026 - 11.12.2026</p>
+                                </div>
+                                <p class="unit-links">
+                                <a href="material/wp-5-e2-groessen.pdf" class="plan-link">Wochenpläne Einheit 2</a>
+                                <a href="material/erg-5-e2.pdf" class="solution-link">Lösungen Einheit 2</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-12-07">
+                        <td>
+                            <strong>Woche 16</strong><br>
+                            <small>07.12. - 11.12.</small>
+                        </td>
+                        <td>
+                            <strong>Klassenarbeit</strong>
+                            Wiederholung mit Selbsteinschätzungsbogen und Schreiben der Klassenarbeit.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+                            <p class="week-links">
+                                <a href="material/se16-wiederholung.pdf" class="plan-link">Selbsteinschätzungsbogen</a>
+                            </p>
+                            <ul class="task-list">
+                                <li>Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-30">
+                        <td>
+                            <strong>Woche 15</strong><br>
+                            <small>30.11. - 04.12.</small>
+                        </td>
+                        <td>
+                            <strong>Gemischtes (Lerntheke)</strong>
+                            Stationenarbeit zur Festigung und Wiederholung der bisherigen Themen.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-23">
+                        <td>
+                            <strong>Woche 14</strong><br>
+                            <small>23.11. - 27.11.</small>
+                        </td>
+                        <td>
+                            <strong>Zeit</strong>
+                            Umgang mit Uhrzeiten, Zeitspannen und Umrechnungen.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-16">
+                        <td>
+                            <strong>Woche 13</strong><br>
+                            <small>16.11. - 20.11.</small>
+                        </td>
+                        <td>
+                            <strong>Sachaufgaben</strong>
+                            Mathematik im Alltag: Bearbeiten von Textaufgaben mit Größen.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-09">
+                        <td>
+                            <strong>Woche 12</strong><br>
+                            <small>09.11. - 13.11.</small>
+                        </td>
+                        <td>
+                            <strong>Währung</strong>
+                            Rechnen mit Euro und Cent.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-11-02">
+                        <td>
+                            <strong>Woche 11</strong><br>
+                            <small>02.11. - 06.11.</small>
+                        </td>
+                        <td>
+                            <strong>Rechnen mit Größen</strong>
+                            Wir addieren und subtrahieren verschiedene Maßeinheiten und rechnen mit dem Maßstab.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-10-26">
+                        <td>
+                            <strong>Woche 10</strong><br>
+                            <small>26.10. - 30.10.</small>
+                        </td>
+                        <td>
+                            <strong>Masse</strong>
+                            Umrechnung von Gewichten (t, kg, g, mg).
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-10-19">
+                        <td>
+                            <strong>Woche 9</strong><br>
+                            <small>19.10. - 23.10.</small>
+                        </td>
+                        <td>
+                            <strong>Längen</strong>
+                            Umrechnung und Umgang mit Längeneinheiten.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+
+                    <tr class="unit-row" data-start-date="2026-08-10">
+                        <td colspan="4">
+                            <div class="unit-head">
+                                <div>
+                                    <p class="unit-eyebrow">Einheit 1</p>
+                                    <h2 class="unit-title">Natürliche Zahlen</h2>
+                                    <p class="unit-meta">10.08.2026 - 02.10.2026</p>
+                                </div>
+                                <p class="unit-links">
+                                <a href="material/wp-5-einheit1.pdf" class="plan-link">Wochenplan</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-09-28">
+                        <td>
+                            <strong>Woche 8</strong><br>
+                            <small>28.09. - 02.10.</small>
+                        </td>
+                        <td>
+                            <strong>Klassenarbeit und Rückgabe</strong>
+                            Wiederholung mit Selbsteinschätzungsbogen, Schreiben der Klassenarbeit und Rückgabe.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+                            <p class="week-links">
+                                <a href="material/se08-wiederholung.pdf" class="plan-link">Selbsteinschätzungsbogen</a>
+                            </p>
+                            <ul class="task-list">
+                                <li>Selbsteinschätzungsbogen ausfüllen und die angekreuzten Aufgaben üben</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-09-21">
+                        <td>
+                            <strong>Woche 7</strong><br>
+                            <small>21.09. - 25.09.</small>
+                        </td>
+                        <td>
+                            <strong>Daten erheben und darstellen</strong>
+                            Wir lernen, wie man Informationen sammelt und übersichtlich grafisch darstellt.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-09-14">
+                        <td>
+                            <strong>Woche 6</strong><br>
+                            <small>14.09. - 18.09.</small>
+                        </td>
+                        <td>
+                            <strong>Zahlensysteme</strong>
+                            Wir lernen das Binärsystem und die römische Zahldarstellung kennen.
+                        </td>
+                        <td data-label="Erklärvideos">
+                            <a href="#" class="video-link">Binärsystem</a><br>
+                            <a href="#" class="video-link">Römische Zahldarstellung</a><br>
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-09-07">
+                        <td>
+                            <strong>Woche 5</strong><br>
+                            <small>07.09. - 11.09.</small>
+                        </td>
+                        <td>
+                            <strong>Potenzen und Potenzdarstellung</strong>
+                            Wir führen die Potenz als wiederholte Multiplikation ein.
+                        </td>
+                        <td data-label="Erklärvideos">
+                            <a href="#" class="video-link">Potenzen</a><br>
+                            <a href="#" class="video-link">Dezimalsystem mit Potenzdarstellung</a><br>
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-08-31">
+                        <td>
+                            <strong>Woche 4</strong><br>
+                            <small>31.08. - 04.09.</small>
+                        </td>
+                        <td>
+                            <strong>Multiplizieren und Dividieren</strong>
+                            Wir wiederholen die Multiplikation und Division aus der Grundschule und erweitern sie um neue Fachbegriffe.
+                        </td>
+                        <td data-label="Erklärvideos">
+                            <a href="#" class="video-link">Multiplizieren und Dividieren</a><br>
+                            <a href="#" class="video-link">Schriftliches Multiplizieren</a><br>
+                            <a href="#" class="video-link">Schriftliches Dividieren</a><br>
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-08-24">
+                        <td>
+                            <strong>Woche 3</strong><br>
+                            <small>24.08. - 28.08.</small>
+                        </td>
+                        <td>
+                            <strong>Addieren und Subtrahieren</strong>
+                            Wir wiederholen die Addition und Subtraktion aus der Grundschule und erweitern sie um neue Fachbegriffe.
+                        </td>
+                        <td data-label="Erklärvideos">
+                            <a href="#" class="video-link">Addieren und Subtrahieren</a><br>
+                            <a href="#" class="video-link">Runden und Überschlagen</a><br>
+                            <a href="#" class="video-link">Schriftliches Addieren</a><br>
+                            <a href="#" class="video-link">Schriftliches Subtrahieren</a><br>
+                        </td>
+                        <td data-label="Aufgaben">
+
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-08-17">
+                        <td>
+                            <strong>Woche 2</strong><br>
+                            <small>17.08. - 21.08.</small>
+                        </td>
+                        <td>
+                            <strong>Zahlenmengen und natürliche Zahlen</strong>
+                            Wir lernen den Begriff der Menge kennen und finden erste Eigenschaften der natürlichen Zahlen.
+                        </td>
+                        <td data-label="Erklärvideos">
+                            <a href="https://youtu.be/qa2eFzx7mNo" class="video-link">Zahlenmengen</a><br>
+                            <a href="https://youtu.be/_2OzzaIGCV0" class="video-link">Anordnen und vergleichen</a><br>
+                        </td>
+                        <td data-label="Aufgaben">
+                            <a href="https://cloud.matheinfo.schule/s/5k3x4g6y7z8w9v0" class="extra-link">Aufgaben</a>
+                            <a href="https://cloud.matheinfo.schule/s/MiQ3gnYWWaMHXRd" class="solution-link">Lösungen</a>
+                        </td>
+                    </tr>
+                    <tr class="week-row" data-start-date="2026-08-10">
+                        <td>
+                            <strong>Woche 1</strong><br>
+                            <small>10.08. - 14.08.</small>
+                        </td>
+                        <td>
+                            <strong>Wiederholung und Diagnose</strong>
+                            Wir wiederholen die Inhalte aus der Grundschule, um auf dem selben Stand zu starten.
+                        </td>
+                        <td data-label="Erklärvideos">
+
+                        </td>
+                        <td data-label="Aufgaben">
+                            <a href="https://cloud.matheinfo.schule/s/cTDKkttkPmcpraE" class="extra-link">Diagnosebogen</a>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -1350,76 +1125,78 @@ a:focus-visible {
         <small>Diese Seite dient ausschließlich schulischen Zwecken.</small>
     </footer>
 
-    <!-- JavaScript für die automatische Freischaltung & geheimen Testmodus -->
+    <!-- JavaScript für die automatische Freischaltung und den geheimen Testmodus -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const rows = document.querySelectorAll('.week-row');
+            const rows = document.querySelectorAll('.week-row, .unit-row');
+            const weekRows = document.querySelectorAll('.week-row');
             const emptyState = document.getElementById('empty-state');
             const secretButton = document.querySelector('header h1'); // Die Überschrift als geheimer Schalter
-            
+
             let isTestMode = false;
             let clickCount = 0;
             let clickTimer;
 
-            // Funktion, die die Sichtbarkeit basierend auf Datum und Testmodus regelt
+            // Sichtbarkeit nach Datum und Testmodus regeln
             function updateVisibility() {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                
-                let visibleCount = 0;
+
+                let visibleWeeks = 0;
 
                 rows.forEach(row => {
                     const dateString = row.getAttribute('data-start-date');
-                    
-                    if (dateString) {
-                        const startDate = new Date(dateString);
-                        startDate.setHours(0, 0, 0, 0);
+                    if (!dateString) return;
 
-                        // Zeile anzeigen, wenn Testmodus AKTIV ist ODER das Datum erreicht wurde
-                        if (isTestMode || today >= startDate) {
-                            row.style.display = 'table-row';
-                            visibleCount++;
-                        } else {
-                            // Andernfalls wieder verstecken
-                            row.style.display = 'none';
-                        }
+                    const startDate = new Date(dateString);
+                    startDate.setHours(0, 0, 0, 0);
+
+                    const show = isTestMode || today >= startDate;
+                    row.classList.toggle('is-visible', show);
+                    if (show && row.classList.contains('week-row')) visibleWeeks++;
+                });
+
+                // Laufende Woche markieren: die neueste sichtbare Woche
+                let current = null;
+                weekRows.forEach(row => {
+                    row.classList.remove('current');
+                    const dateString = row.getAttribute('data-start-date');
+                    if (!dateString) return;
+                    const startDate = new Date(dateString);
+                    startDate.setHours(0, 0, 0, 0);
+                    if (today >= startDate && (!current || startDate > current.date)) {
+                        current = { row: row, date: startDate };
                     }
                 });
+                if (current) current.row.classList.add('current');
 
                 // Platzhaltertext ein- oder ausblenden
                 if (emptyState) {
-                    emptyState.style.display = visibleCount > 0 ? 'none' : 'table-row';
+                    emptyState.style.display = visibleWeeks > 0 ? 'none' : '';
                 }
             }
 
             // Der "Easter Egg"-Klick-Zähler
             if (secretButton) {
-                // Den Mauszeiger nicht verändern, damit es geheim bleibt!
-                secretButton.style.cursor = "default"; 
-                // Verhindert, dass der Text beim schnellen Klicken markiert wird
-                secretButton.style.userSelect = "none"; 
+                secretButton.style.cursor = "default";
+                secretButton.style.userSelect = "none";
 
                 secretButton.addEventListener('click', function() {
                     clickCount++;
-                    
-                    // Den Timer zurücksetzen
                     clearTimeout(clickTimer);
-                    
-                    // Wenn 3 Mal geklickt wurde
+
                     if (clickCount >= 3) {
-                        isTestMode = !isTestMode; // Modus umschalten (an/aus)
-                        updateVisibility();       // Tabelle sofort aktualisieren
-                        clickCount = 0;           // Zähler wieder auf 0 setzen
+                        isTestMode = !isTestMode;
+                        updateVisibility();
+                        clickCount = 0;
                     }
 
-                    // Zähler automatisch auf 0 setzen, wenn 1,5 Sekunden lang nicht geklickt wird
                     clickTimer = setTimeout(() => {
                         clickCount = 0;
                     }, 1500);
                 });
             }
 
-            // Beim ersten Laden der Seite einmal ausführen
             updateVisibility();
         });
     </script>
