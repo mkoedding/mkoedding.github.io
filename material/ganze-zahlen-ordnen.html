@@ -15,6 +15,7 @@
   --plus:#a2600d;
   --richtig:#1f7a4d;
   --falsch:#b3261e;
+  --kh: clamp(50px, 10.5vh, 104px);
   --schrift: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 *{box-sizing:border-box}
@@ -24,15 +25,15 @@ body{
   color:var(--tinte);
   font-family:var(--schrift);
   min-height:100vh;
-  padding:clamp(12px,2vw,28px);
+  padding:clamp(10px,1.6vh,22px) clamp(12px,2vw,28px);
 }
 .eyebrow{
-  font-size:clamp(11px,1vw,13px);
+  font-size:clamp(10px,0.95vw,12px);
   font-weight:700;
   letter-spacing:.16em;
   text-transform:uppercase;
   color:var(--tinte-hell);
-  margin:0 0 10px;
+  margin:0 0 6px;
 }
 header{
   display:flex;
@@ -40,11 +41,11 @@ header{
   align-items:baseline;
   gap:12px 20px;
   border-bottom:3px solid var(--tinte);
-  padding-bottom:14px;
-  margin-bottom:clamp(16px,2.5vw,30px);
+  padding-bottom:clamp(8px,1.2vh,14px);
+  margin-bottom:clamp(10px,1.8vh,24px);
 }
 h1{
-  font-size:clamp(20px,2.6vw,32px);
+  font-size:clamp(18px,2.2vw,28px);
   font-weight:800;
   letter-spacing:-.02em;
   margin:0;
@@ -71,14 +72,14 @@ button.stark{background:var(--tinte);color:#fff}
 button.stark:hover{background:#25365a}
 button:disabled{opacity:.4;cursor:default}
 
-section{margin-bottom:clamp(16px,2.4vw,28px)}
-.hinweis{font-size:clamp(13px,1.1vw,15px);color:var(--tinte-hell);margin:0 0 10px}
+section{margin-bottom:clamp(8px,1.6vh,20px)}
+.hinweis{font-size:inherit;font-weight:600;letter-spacing:0;text-transform:none;color:var(--tinte-hell)}
 
 .vorrat{
-  display:flex;flex-wrap:wrap;gap:clamp(8px,1.2vw,16px);
-  min-height:clamp(78px,9vw,110px);
+  display:flex;flex-wrap:wrap;gap:clamp(6px,1vw,14px);
+  min-height:calc(var(--kh) + 16px);
   align-items:center;
-  padding:clamp(8px,1.2vw,14px);
+  padding:8px clamp(8px,1.2vw,14px);
   background:rgba(255,255,255,.45);
   border:2px dashed var(--linie);
   border-radius:14px;
@@ -88,7 +89,7 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
 
 .kette{display:flex;flex-wrap:wrap;gap:clamp(6px,1vw,14px);align-items:center}
 .zeichen{
-  font-size:clamp(30px,4.4vw,58px);
+  font-size:calc(var(--kh) * 0.46);
   font-weight:800;
   color:var(--tinte-hell);
   line-height:1;
@@ -98,8 +99,8 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
 .zeichen.fehler{color:var(--falsch)}
 
 .karte,.platz{
-  width:clamp(84px,9vw,132px);
-  height:clamp(78px,8vw,116px);
+  width:calc(var(--kh) * 1.16);
+  height:var(--kh);
   border-radius:12px;
   display:flex;align-items:center;justify-content:center;
   touch-action:none;
@@ -108,7 +109,7 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
   background:var(--papier);
   border:3px solid var(--tinte);
   box-shadow:0 3px 0 var(--tinte);
-  font-size:clamp(28px,3.6vw,46px);
+  font-size:calc(var(--kh) * 0.40);
   font-weight:800;
   font-variant-numeric:tabular-nums;
   letter-spacing:-.03em;
@@ -133,9 +134,9 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
 
 .aktionen{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .rueckmeldung{
-  font-size:clamp(15px,1.5vw,20px);
+  font-size:clamp(14px,1.4vw,19px);
   font-weight:600;
-  margin:14px 0 0;
+  margin:8px 0 0;
   min-height:1.4em;
 }
 .rueckmeldung.ok{color:var(--richtig)}
@@ -145,16 +146,98 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
   background:var(--papier);
   border:3px solid var(--tinte);
   border-radius:14px;
-  padding:clamp(8px,1.4vw,18px);
+  padding:clamp(6px,1vh,14px) clamp(8px,1.4vw,18px);
 }
-.tafel svg{display:block;width:100%;height:auto}
+.tafel svg{display:block;width:100%;height:auto;max-height:30vh}
 .legende{
   display:flex;flex-wrap:wrap;gap:6px 22px;
-  font-size:clamp(12px,1.1vw,14px);
+  font-size:clamp(11px,1vw,13px);
   color:var(--tinte-hell);
-  margin:10px 2px 0;
+  margin:6px 2px 0;
+}
+.ablauf{
+  background:var(--papier);
+  border:3px solid var(--tinte);
+  border-radius:14px;
+  padding:clamp(16px,2.6vw,34px);
+  max-width:1000px;
+}
+.ziel{
+  font-size:clamp(20px,2.4vw,32px);
+  font-weight:800;
+  letter-spacing:-.02em;
+  line-height:1.25;
+  margin:0 0 clamp(14px,2vw,24px);
+}
+.schritte{
+  list-style:none;
+  counter-reset:s;
+  margin:0 0 clamp(14px,2vw,24px);
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.schritte li{
+  counter-increment:s;
+  display:flex;align-items:center;gap:14px;
+  font-size:clamp(15px,1.6vw,22px);
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--tinte-hell);
+}
+.schritte li::before{
+  content:counter(s);
+  flex:0 0 auto;
+  width:1.9em;height:1.9em;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--linie);
+  border-radius:50%;
+  font-size:.85em;font-weight:800;
+}
+.schritte li.aktuell{
+  background:rgba(47,111,143,.10);
+  color:var(--tinte);
+}
+.gerueste{
+  list-style:none;margin:0 0 clamp(12px,1.8vh,20px);padding:0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.gerueste li{
+  font-size:clamp(17px,2vw,26px);
+  font-weight:700;
+  padding:10px 14px;
+  border-left:5px solid var(--minus);
+  background:rgba(47,111,143,.07);
+  border-radius:0 10px 10px 0;
+}
+.luecke{
+  display:inline-block;
+  min-width:3.4em;
+  border-bottom:3px solid var(--tinte-hell);
+}
+.regel{
+  font-size:clamp(14px,1.4vw,18px);
+  color:var(--tinte-hell);
+  font-weight:600;
+  margin:0;
+}
+.schritte li.aktuell::before{
+  border-color:var(--minus);
+  background:var(--minus);
+  color:#fff;
 }
 [hidden]{display:none !important}
+
+@media (max-height: 700px){
+  :root{--kh: clamp(48px, 9vh, 84px)}
+  h1{font-size:clamp(16px,2vw,22px)}
+  .hinweis{display:none}
+  .tafel svg{max-height:24vh}
+  section{margin-bottom:clamp(6px,1.2vh,14px)}
+}
 
 @media (prefers-reduced-motion: reduce){
   .karte{transition:none}
@@ -166,26 +249,55 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
 <header>
   <div>
     <p class="eyebrow" id="zahlbereich">Klasse 7 · Ganze Zahlen</p>
-    <h1>Ordne die Zahlen der Größe nach</h1>
+    <h1>Zahlen vergleichen und ordnen</h1>
   </div>
   <div class="werkzeuge">
-    <select id="stufe" aria-label="Schwierigkeit">
-      <option value="0">Stufe 0: natürliche Zahlen</option>
-      <option value="1">Stufe 1: einstellig</option>
-      <option value="2" selected>Stufe 2: zweistellig</option>
-      <option value="3">Stufe 3: Stolperzahlen</option>
+    <select id="stufe" aria-label="Aufgabenart">
+      <optgroup label="Zwei Zahlen vergleichen">
+        <option value="v1" selected>1. Zwei natürliche Zahlen</option>
+        <option value="v2">2. Zwei ganze Zahlen</option>
+      </optgroup>
+      <optgroup label="Mehrere Zahlen ordnen">
+        <option value="o1">3. Vier ganze Zahlen, einstellig</option>
+        <option value="o2">4. Fünf ganze Zahlen, zweistellig</option>
+        <option value="o3">5. Fünf Zahlen mit Stolperzahlen</option>
+      </optgroup>
     </select>
-    <button id="neu">Neue Aufgabe</button>
-    <button id="richtung">Zeichen: &lt;</button>
-    <input type="text" id="eigene" placeholder="Eigene Zahlen: -21, -12, 0, 5">
-    <button id="uebernehmen">Übernehmen</button>
+    <button id="ablaufKnopf">Ablauf</button>
+    <button id="fragenKnopf">Fragen</button>
     <button id="vollbild">Vollbild</button>
   </div>
 </header>
 
+<section class="ablauf" id="ablauf">
+  <p class="eyebrow">Mathematik, Klasse 7</p>
+  <h2 class="ziel">Ziel: Ich kann ganze Zahlen der Größe nach ordnen und meine Reihenfolge an der Zahlengeraden begründen.</h2>
+  <ol class="schritte" id="schritte">
+    <li>Zwei Zahlen vergleichen</li>
+    <li>Mehrere Zahlen ordnen</li>
+    <li>Hefteintrag</li>
+    <li>Üben am Tablet</li>
+    <li>Eigene Frage schreiben und beantworten</li>
+  </ol>
+  <button class="stark" id="starten">Aufgabe starten</button>
+</section>
+
+<section class="ablauf" id="fragen" hidden>
+  <p class="eyebrow">Abschluss</p>
+  <h2 class="ziel">Schreibe eine eigene Frage auf und beantworte sie selbst.</h2>
+  <ul class="gerueste">
+    <li>Warum ist <span class="luecke">&nbsp;</span> kleiner als <span class="luecke">&nbsp;</span>?</li>
+    <li>Woran erkenne ich, dass <span class="luecke">&nbsp;</span>?</li>
+    <li>Wie kann ich prüfen, ob <span class="luecke">&nbsp;</span>?</li>
+    <li>Worin unterscheiden sich <span class="luecke">&nbsp;</span> und <span class="luecke">&nbsp;</span>?</li>
+  </ul>
+  <p class="regel">In deiner Frage müssen mindestens zwei ganze Zahlen vorkommen. Antwort in einem vollständigen Satz.</p>
+</section>
+
+<div id="arbeit" hidden>
+
 <section>
-  <p class="eyebrow">Kartenvorrat</p>
-  <p class="hinweis">Karte antippen, dann den Platz antippen. Ziehen geht auch.</p>
+  <p class="eyebrow">Kartenvorrat<span class="hinweis"> · Karte antippen, dann den Platz antippen. Ziehen geht auch.</span></p>
   <div class="vorrat" id="vorrat" data-ziel="vorrat"></div>
 </section>
 
@@ -199,6 +311,7 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
   <button class="stark" id="zeigen">Zahlengerade zeigen</button>
   <button id="pruefen">Zeichen prüfen</button>
   <button id="leeren">Karten zurücklegen</button>
+  <button id="neu">Neue Zahlen</button>
 </section>
 
 <section id="geradeBox" hidden>
@@ -206,10 +319,10 @@ section{margin-bottom:clamp(16px,2.4vw,28px)}
   <div class="tafel">
     <div id="gerade"></div>
   </div>
-  <div class="legende">
-    <span>Die Zahl in der Fahne zeigt den Platz in deiner Kette.</span>
-  </div>
+  <div class="legende">Die Zahl in der Fahne zeigt den Platz in deiner Kette. Links liegen die kleineren Zahlen.</div>
 </section>
+
+</div>
 
 <script>
 const zustand = {
@@ -229,8 +342,6 @@ const el = {
   geradeBox: document.getElementById("geradeBox"),
   gerade: document.getElementById("gerade"),
   stufe: document.getElementById("stufe"),
-  eigene: document.getElementById("eigene"),
-  richtung: document.getElementById("richtung"),
   zeigen: document.getElementById("zeigen"),
   zahlbereich: document.getElementById("zahlbereich")
 };
@@ -260,16 +371,31 @@ function ziffernDreher(){
   return { zahl: z, gedreht: d2 * 10 + d1 };
 }
 
+function zweiVerschiedene(bauen){
+  let a, b, versuche = 0;
+  do { [a, b] = bauen(); versuche++; } while(a === b && versuche < 30);
+  return mischen([a, b]);
+}
+
 function neueAufgabe(stufe){
+  if(stufe === "v1"){
+    return zweiVerschiedene(() => {
+      const art = zufall(1, 3);
+      if(art === 1){ const d = ziffernDreher(); return [d.zahl, d.gedreht]; }
+      if(art === 2) return [zufall(2, 9), zufall(11, 99)];
+      return [zufall(11, 99), zufall(11, 99)];
+    });
+  }
+  if(stufe === "v2"){
+    const klein = zufall(1, 7);
+    const gross = zufall(klein + 2, 9);
+    return mischen([-klein, -gross]);
+  }
+
   const menge = new Set();
-  if(stufe === "0"){
-    const dreh = ziffernDreher();
-    menge.add(dreh.zahl); menge.add(dreh.gedreht);
-    menge.add(zufall(1, 9));
-    while(menge.size < 5) menge.add(zufall(10, 99));
-  } else if(stufe === "1"){
+  if(stufe === "o1"){
     while(menge.size < 4) menge.add(zufall(-9, 9));
-  } else if(stufe === "2"){
+  } else if(stufe === "o2"){
     while(menge.size < 3) menge.add(zufall(-99, -10));
     menge.add(zufall(-9, 0));
     while(menge.size < 5) menge.add(zufall(1, 99));
@@ -508,7 +634,7 @@ function zeichneGerade(){
   if(!natur) lo = Math.floor((lo - roh * 0.10) / schritt) * schritt;
   hi = Math.ceil((hi + roh * 0.10) / schritt) * schritt;
 
-  const B = 1000, H = 230, links = 46, rechts = 46, achse = 168;
+  const B = 1000, H = 172, links = 46, rechts = 46, achse = 118;
   const px = v => links + (v - lo) / (hi - lo) * (B - links - rechts);
   const feineTeilung = (hi - lo) <= 70;
 
@@ -531,7 +657,7 @@ function zeichneGerade(){
   for(let v = lo; v <= hi; v += schritt){
     const stark = v === 0;
     s += `<line x1="${px(v)}" y1="${achse - (stark ? 22 : 13)}" x2="${px(v)}" y2="${achse + (stark ? 22 : 13)}" stroke="var(--tinte)" stroke-width="${stark ? 5 : 3}"/>`;
-    s += `<text x="${px(v)}" y="${achse + 46}" text-anchor="middle" font-size="21" font-weight="${stark ? 800 : 600}" fill="var(--tinte)" font-family="var(--schrift)">${v}</text>`;
+    s += `<text x="${px(v)}" y="${achse + 40}" text-anchor="middle" font-size="21" font-weight="${stark ? 800 : 600}" fill="var(--tinte)" font-family="var(--schrift)">${v}</text>`;
   }
 
   const anfang = natur ? px(0) : links - 24;
@@ -544,14 +670,14 @@ function zeichneGerade(){
                        .sort((a, b) => a.x - b.x);
 
   if(punkte.length === 0){
-    s += `<text x="${B / 2}" y="${achse - 66}" text-anchor="middle" font-size="22" font-weight="600" fill="var(--tinte-hell)" font-family="var(--schrift)">Sobald eine Karte in der Kette liegt, erscheint ihr Zahlpunkt.</text>`;
+    s += `<text x="${B / 2}" y="${achse - 58}" text-anchor="middle" font-size="22" font-weight="600" fill="var(--tinte-hell)" font-family="var(--schrift)">Sobald eine Karte in der Kette liegt, erscheint ihr Zahlpunkt.</text>`;
   }
 
   let letzteX = -999, hoch = false;
   punkte.forEach(p => {
     hoch = (p.x - letzteX < 78) ? !hoch : false;
     letzteX = p.x;
-    const y = achse - (hoch ? 86 : 44);
+    const y = achse - (hoch ? 76 : 40);
     const platz = p.platz;
     const farbe = p.wert < 0 ? "var(--minus)" : (p.wert > 0 && !natur ? "var(--plus)" : "var(--tinte)");
 
@@ -560,7 +686,7 @@ function zeichneGerade(){
     s += `<text x="${p.x}" y="${y + 2}" text-anchor="middle" font-size="27" font-weight="800" fill="${farbe}" font-family="var(--schrift)">${p.wert}</text>`;
 
     if(platz >= 0){
-      const fx = p.x + 22, fy = y - 24;
+      const fx = p.x + 22, fy = y - 22;
       s += `<circle cx="${fx}" cy="${fy}" r="15" fill="var(--papier)" stroke="${farbe}" stroke-width="3"/>`;
       s += `<text x="${fx}" y="${fy + 7}" text-anchor="middle" font-size="17" font-weight="800" fill="${farbe}" font-family="var(--schrift)">${platz + 1}</text>`;
     }
@@ -588,7 +714,8 @@ function pruefen(){
     const richtungText = zustand.richtung === "<"
       ? "Von links nach rechts wird jede Zahl größer."
       : "Von links nach rechts wird jede Zahl kleiner.";
-    meldung("Die Kette stimmt. " + richtungText, "ok");
+    const kopf = werte.length === 2 ? "Das Zeichen stimmt. " : "Die Kette stimmt. ";
+    meldung(kopf + richtungText, "ok");
   } else if(fehler === 1){
     meldung("Ein Zeichen stimmt nicht. Sieh dir die rote Stelle an der Zahlengeraden an.", "fehler");
   } else {
@@ -606,28 +733,6 @@ el.stufe.addEventListener("change", () => {
   setzeZahlen(neueAufgabe(el.stufe.value));
 });
 
-el.richtung.addEventListener("click", () => {
-  zustand.richtung = zustand.richtung === "<" ? ">" : "<";
-  el.richtung.innerHTML = "Zeichen: " + (zustand.richtung === "<" ? "&lt;" : "&gt;");
-  zustand.geprueft = false;
-  meldung("", "");
-  zeichnen();
-});
-
-document.getElementById("uebernehmen").addEventListener("click", () => {
-  const roh = el.eigene.value.split(/[^\-\d]+/).filter(t => t !== "" && t !== "-");
-  const zahlen = [...new Set(roh.map(Number).filter(Number.isInteger))].slice(0, 8);
-  if(zahlen.length < 2){
-    meldung("Bitte mindestens zwei ganze Zahlen eintragen, getrennt durch Komma.", "fehler");
-    return;
-  }
-  setzeZahlen(mischen(zahlen));
-});
-
-el.eigene.addEventListener("keydown", (e) => {
-  if(e.key === "Enter") document.getElementById("uebernehmen").click();
-});
-
 document.getElementById("zeigen").addEventListener("click", () => {
   zustand.geradeSichtbar = !zustand.geradeSichtbar;
   el.geradeBox.hidden = !zustand.geradeSichtbar;
@@ -640,6 +745,30 @@ document.getElementById("pruefen").addEventListener("click", pruefen);
 
 document.getElementById("leeren").addEventListener("click", () => {
   setzeZahlen(zustand.zahlen.slice());
+});
+
+function zeigePanel(name){
+  document.getElementById("ablauf").hidden = name !== "ablauf";
+  document.getElementById("fragen").hidden = name !== "fragen";
+  document.getElementById("arbeit").hidden = name !== null;
+}
+
+document.getElementById("starten").addEventListener("click", () => zeigePanel(null));
+
+document.getElementById("ablaufKnopf").addEventListener("click", () => {
+  zeigePanel(document.getElementById("ablauf").hidden ? "ablauf" : null);
+});
+
+document.getElementById("fragenKnopf").addEventListener("click", () => {
+  zeigePanel(document.getElementById("fragen").hidden ? "fragen" : null);
+});
+
+document.querySelectorAll("#schritte li").forEach(li => {
+  li.addEventListener("click", () => {
+    const war = li.classList.contains("aktuell");
+    document.querySelectorAll("#schritte li").forEach(n => n.classList.remove("aktuell"));
+    if(!war) li.classList.add("aktuell");
+  });
 });
 
 document.getElementById("vollbild").addEventListener("click", () => {
